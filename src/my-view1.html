@@ -55,19 +55,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 //                "username": this.data.username,
 //                    "password": this.data.password,
                 const myHeaders = new Headers({
+                    'Accept': 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded'
                 });
 //                const postData = JSON.stringify(this.data);
-                const formData = new FormData();
-                formData.append('username', this.data.username);
-                formData.append('password', this.data.password);
+//                const formData = new FormData();
+//                formData.append('username', this.data.username);
+//                formData.append('password', this.data.password);
+                let formBody = [];
+                formBody.push(encodeURIComponent('username') + "=" + this.data.username);
+                formBody.push(encodeURIComponent('password') + "=" + this.data.password);
+                formBody = formBody.join("&");
                 window.fetch('/api/tokens', {
-                        method: 'post',
-                        headers: myHeaders,
-                        body:formData
-                    }).then(result => {
-                    console.log('Result', JSON.stringify(result));
-                })
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: formBody
+                }).then(response => response.json())
+                    .then(json => {
+                        console.log(JSON.stringify(json));
+                    })
             }
         }
 

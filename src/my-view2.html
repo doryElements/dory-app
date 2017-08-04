@@ -31,8 +31,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div slot="main-title">Lorem ipsum dolor sit amet</div>
       <div slot="content">
         <h1>Page content</h1>
-        <air-cruddy id="cruddy" data="{{data}}" url="api/sams"
-                    entity-id="new"  debug>
+        <air-cruddy id="cruddy" data="{{data}}" url="/api/sams"
+                    credentials="include"
+                    entity-id="1"  debug>
           <!--<div>id : [[data.id]]</div>-->
           <div style="width: 600px">
 
@@ -65,6 +66,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 data: {
                     type: Object,
                     notify:true
+                },
+                entityId: {
+                    type: String,
+                    notify:true,
+                    value:'1'
                 }
             }
         }
