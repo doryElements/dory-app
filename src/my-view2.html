@@ -11,6 +11,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="shared-styles.html">
 
+<link rel="import" href="../bower_components/earth-cruddy/earth-cruddy.html">
+<link rel="import" href="../bower_components/air-cruddy/air-cruddy.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+
 <dom-module id="my-view2">
   <template>
     <style include="shared-styles">
@@ -21,17 +26,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <div class="card">
-      <div class="circle">2</div>
-      <h1>View Two</h1>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-      <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
-    </div>
+    <earth-cruddy status="{{status}}" debug>
+      <div slot="title">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+      <div slot="main-title">Lorem ipsum dolor sit amet</div>
+      <div slot="content">
+        <h1>Page content</h1>
+        <air-cruddy id="cruddy" data="{{data}}" url="api/sams"
+                    entity-id="new"  debug>
+          <!--<div>id : [[data.id]]</div>-->
+          <div style="width: 600px">
+
+            <paper-input label="name" value="{{data.name}}" required></paper-input>
+            <paper-input label="Lastname" value="{{data.lastname}}" required></paper-input>
+            <paper-input label="Age" value="{{data.age}}" error-message="L'age est obligatoire" required type="number" allowed-pattern="[0-9]" step="1"></paper-input>
+          </div>
+        </air-cruddy>
+      </div>
+      <div slot="dropdown">
+        <earth-dropdown-item icon="icons:refresh">Refresh</earth-dropdown-item>
+        <earth-dropdown-item icon="icons:add-shopping-cart">Add chart</earth-dropdown-item>
+      </div>
+      <!--<div slot="header-icon">-->
+      <!--<paper-icon-button  icon="icons:alarm"></paper-icon-button>-->
+      <!--<paper-icon-button icon="icons:android"></paper-icon-button>-->
+      <!--</div>-->
+      <!--<div slot="error">-->
+      <!--<h1>MON ERROR Bye !!!! </h1>-->
+      <!--</div>-->
+    </earth-cruddy>
   </template>
 
   <script>
     class MyView2 extends Polymer.Element {
       static get is() { return 'my-view2'; }
+
+        static get properties() {
+            return {
+                data: {
+                    type: Object,
+                    notify:true
+                }
+            }
+        }
+
     }
 
     window.customElements.define(MyView2.is, MyView2);
