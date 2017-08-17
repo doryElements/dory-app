@@ -1,0 +1,185 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../bower_components/dory-sam/dory-sam.html">
+<link rel="import" href="../bower_components/dory-sam/dory-sam-list.html">
+<link rel="import" href="../bower_components/dory-layout/dory-main-layout/dory-main-layout.html">
+<link rel="import" href="../bower_components/dory-layout/dory-request.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="dory-list">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+
+      app-toolbar {
+        height: 100px;
+        background-color: white;
+      }
+
+      #search {
+        width : calc(100% - 2px);
+        height : calc(100% - 2px);
+        padding : 0;
+        position : absolute;
+        margin-top : auto;
+        margin-bottom: auto;
+        --paper-input-container-underline:{
+          display : none;
+        };
+        --paper-input-container-underline-focus: {
+          display: none;
+        };
+        --paper-input-container-underline-disabled: {
+          display: none;
+        };
+        --paper-input-container:{
+          height : calc(100% - 10px);
+          padding :5px;
+        };
+      }
+      paper-input[focused]{
+        border  : solid 1px var(--search-border-color);
+      }
+    </style>
+
+    <app-header slot="header" condenses reveals effects="waterfall">
+      <iron-pages selected="[[tabSelected]]"   fallback-selection="fallback">
+        <app-toolbar>
+          <div main-title>DORY - Dépendances des applications</div>
+          <paper-icon-button icon="search" on-tap="_toggleSearchBar" class="big-icon"></paper-icon-button>
+        </app-toolbar>
+
+        <app-toolbar>
+          <paper-input id="search" class="search-bar" value="{{searchText}}" placeholder="[[placeholder]]" on-blur="_toggleSearchBar">
+            <iron-icon slot="prefix" icon="search" class="big-icon"></iron-icon>
+            <paper-icon-button slot="suffix" icon="clear" class="big-icon" on-mousedown="_clearSearchBar"></paper-icon-button>
+          </paper-input>
+        </app-toolbar>
+      </iron-pages>
+    </app-header>
+
+
+
+    <div class="content" on-scroll="_handleContentScroll" id="content">
+      <dory-request id="request" url="[[url]]" data="{{listData}}"></dory-request>
+      <dory-sam-list id="doryList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
+      <paper-fab  icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
+    </div>
+
+  </template>
+
+  <script>
+    class DoryList extends Polymer.Element {
+      static get is() { return 'dory-list'; }
+
+      ready() {
+        super.ready();
+        this.$.doryList.addEventListener('dory-open-editor', (e) => {
+            this._handleEdit(e);
+        });
+        this.$.doryList.addEventListener('dory-open-details', (e) => {
+            this._handleDetails(e);
+        });
+      }
+
+      static get properties() {
+        return{
+          logo: {
+              type: String,
+          },
+          /**
+           * {string} value of the input inside the search-bar
+           */
+          searchText: {
+            type: String,
+            observer: '_searchTextChanged',
+            notify: true,
+          },
+
+          /**
+           * {Array} of results returned by dory-request
+           */
+          listData: {
+            type: Array,
+            notify: true,
+          },
+
+          /**
+           * {string} url used to connect to the DB
+           */
+          url: {
+            type: String,
+            value: 'https://localhost:8181/api/sams/',
+          },
+
+          tabSelected: {
+              type: Number,
+              value: 0,
+          },
+        };
+      }
+
+      _handleEdit(e) {
+          this.entityId = e.detail.id;
+          this.dispatchEvent(new CustomEvent('dory-open-editor',{detail:{id:this.entityId}}));
+      }
+
+      _handleDetails(e) {
+          this.entityId = e.detail.id;
+          this.dispatchEvent(new CustomEvent('dory-open-details',{detail:{id:this.entityId}}));
+      }
+
+      _searchTextChanged(newValue) {
+        this._debouncer = Polymer.Debouncer.debounce(
+          this._debouncer,
+          Polymer.Async.timeOut.after(this.delay),
+          () => {
+            this.shadowRoot.querySelector('#request').createRequest(this.searchText);
+          }
+        );
+      }
+
+      _handleContentScroll() {
+        if(this.$.content.offsetHeight + this.$.content.scrollTop >= this.$.content.scrollHeight) {
+          this.shadowRoot.querySelector('#request').loadMoreData();
+        }
+      }
+
+      _toggleSearchBar() {
+        if(this.tabSelected === 0) {
+          this.tabSelected=1;
+          this.$.search.focus();
+        }
+        else{
+          this.tabSelected=0;
+        }
+      }
+
+      _clearSearchBar() {
+        this.searchText = '';
+        this.listData=[];
+        this.shadowRoot.querySelector('#request').createRequest(this.searchText);
+      }
+    }
+
+    window.customElements.define(DoryList.is, DoryList);
+  </script>
+</dom-module>

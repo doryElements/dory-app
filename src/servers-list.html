@@ -1,0 +1,124 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="servers-list">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+
+            app-toolbar {
+                height: 100px;
+                background-color: white;
+            }
+
+            paper-card{
+                width: 300px;
+                height: 100px;
+                margin: 10px;
+                --paper-card-header-color: var(--h4-color);
+                --paper-card-header-text : {
+                    text-align: center;
+                };
+            }
+
+            h2 {
+                color: var(--h2-color);
+            }
+
+            .content {
+                padding : 10px;
+            }
+
+            paper-tabs{
+                --paper-tabs-selection-bar-color: var(--h2-color);
+            }
+
+            paper-tab.iron-selected {
+                color: var(--h2-color);
+            }
+        </style>
+
+        <app-header slot="header" condenses reveals effects="waterfall">
+            <app-toolbar>
+                <div main-title>DORY - Serveurs</div>
+            </app-toolbar>
+        </app-header>
+
+        <div class="content">
+            <paper-tabs selected="{{tabSelected}}" fit-container>
+                <paper-tab>SERVEURS DMZ</paper-tab>
+                <paper-tab>SERVEURS LAN</paper-tab>
+            </paper-tabs>
+            <iron-pages selected="[[tabSelected]]"  fallback-selection="fallback">
+                <div>
+                    <template is="dom-repeat" items="{{data.serversDmz}}">
+                        <paper-card heading="[[item]]">
+                        </paper-card>
+                    </template>
+                </div>
+                <div>
+                    <template is="dom-repeat" items="{{data.serversLan}}">
+                        <paper-card heading="[[item]]">
+                        </paper-card>
+                    </template>
+                </div>
+            </iron-pages>
+
+        </div>
+    </template>
+    <script>
+        class ServersList extends Polymer.Element {
+            static get is() {
+                return 'servers-list';
+            }
+
+            static get properties() {
+                return {
+                    url: {
+                        type: String,
+                        value: 'https://localhost:8181/api/sams/servers',
+                    },
+                    data: {
+                        type: Object,
+                        notify: true,
+                    },
+                    tabSelected: {
+                        type: Number,
+                        value: 0,
+                    },
+                };
+            }
+            ready() {
+                super.ready();
+                this.fetchServers();
+            }
+
+            fetchServers() {
+                const request={
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'include',
+                };
+                fetch(this.url, request)
+                    .then( (response)=>{
+                        if(response.status !== 200) {
+                            console.error('Fetch error : Error code ', response.status);
+                            return;
+                        }
+                        else{
+                            response.json().then((data)=>{
+                                this.data = data;
+                            });
+                        }
+                    });
+            }
+        }
+        window.customElements.define(ServersList.is, ServersList);
+    </script>
+</dom-module>
