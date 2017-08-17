@@ -7,7 +7,7 @@
   "dependencies": {
     "app-layout": "PolymerElements/app-layout#^2.0.0",
     "app-route": "PolymerElements/app-route#^2.0.0",
-    "dory-sam": "doryElements/dory-sam",
+    "dory-sam": "doryElements/dory-sam#master",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.0.0",
     "iron-media-query": "PolymerElements/iron-media-query#^2.0.0",
@@ -22,6 +22,25 @@
     "polymer": "^2.0.0",
     "air-cascade-validator": "^2.0.0",
     "lodash": "^4.17.4"
+    "polymer": "^2.0.0",
+    "iron-flex-layout": "^2.0.0",
+    "iron-media-query": "^2.0.0",
+    "iron-resizable-behavior": "1 - 2",
+    "iron-scroll-target-behavior": "1 - 2",
+    "iron-location": "1 - 2",
+    "iron-meta": "1 - 2",
+    "iron-selector": "^2.0.0",
+    "iron-icon": "^2.0.0",
+    "paper-behaviors": "1 - 2",
+    "iron-behaviors": "1 - 2",
+    "iron-a11y-keys-behavior": "1 - 2",
+    "iron-checked-element-behavior": "1 - 2",
+    "iron-validatable-behavior": "1 - 2",
+    "iron-form-element-behavior": "1 - 2",
+    "paper-ripple": "1 - 2",
+    "paper-styles": "1 - 2",
+    "lodash": "^4.17.4",
+    "air-cascade-validator": "master"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
