@@ -1,0 +1,47 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+
+<link rel="import" href="../bower_components/earth-cruddy/earth-cruddy.html">
+<link rel="import" href="../bower_components/air-cruddy/air-cruddy.html">
+<link rel="import" href="../bower_components/dory-sam/dory-sam-editor-form.html">
+
+<dom-module id="dory-editor">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+        </style>
+
+        <earth-cruddy id="earth">
+            <div slot="title">Edition</div>
+            <div slot="content">
+                <air-cruddy id="cruddy"
+                            mode="cors"
+                            url="https://localhost:8181/api/sams"
+                            elastic-refresh="true"
+                            data="{{data}}"
+                            credentials="include"
+                            entity-id="{{entityId}}"
+                            debug>
+                    <dory-sam-editor-form id="editor-form" data="{{data}}"></dory-sam-editor-form>
+                </air-cruddy>
+            </div>
+        </earth-cruddy>
+    </template>
+
+    <script>
+        class DoryEditor extends Polymer.Element {
+            static get is() { return 'dory-editor'; }
+            static get properties() {
+                return {
+                    entityId: {
+                        type: String,
+                    },
+                };
+            }
+        }
+
+        window.customElements.define(DoryEditor.is, DoryEditor);
+    </script>
+</dom-module>
