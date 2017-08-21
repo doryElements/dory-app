@@ -1,0 +1,74 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+
+<dom-module id="dory-login">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <paper-input label="username" value="{{data.username}}" required></paper-input>
+        <paper-input label="password" type="password" value="{{data.password}}" required></paper-input>
+        <paper-button on-tap="_handleLogin">Login</paper-button>
+    </template>
+
+    <script>
+        /**
+         * `dory-login`
+         *
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class DoryLogin extends Polymer.Element {
+            static get is() {
+                return 'dory-login';
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                        notify: true,
+                        value: function () {
+                            return {
+                                username: "sarah@mail.com",
+                                password: 'sarah123'
+                            }
+                        }
+                    }
+                };
+            }
+
+            _handleLogin(e) {
+                const myHeaders = new Headers({
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                });
+                let formBody = [];
+                formBody.push(encodeURIComponent('username') + "=" + this.data.username);
+                formBody.push(encodeURIComponent('password') + "=" + this.data.password);
+                formBody = formBody.join("&");
+                window.fetch('/api/tokens', {
+                    method: 'POST',
+                    headers: myHeaders,
+                    credentials: 'same-origin',
+                    body: formBody
+                }).then(response => {
+                    return response.json()
+                }).then(json => {
+                    console.log(JSON.stringify(json));
+                })
+            }
+
+
+        }
+
+        window.customElements.define(DoryLogin.is, DoryLogin);
+    </script>
+</dom-module>
