@@ -9,8 +9,8 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "dory-sam": "doryElements/dory-sam#master",
     "dory-layout": "doryElements/dory-layout#master",
-    "air-cruddy" : "FiveElements/air-cruddy#master",
-    "earth-cruddy" : "FiveElements/earth-cruddy#master",
+    "air-cruddy": "FiveElements/air-cruddy#master",
+    "earth-cruddy": "FiveElements/earth-cruddy#master",
     "app-layout": "PolymerElements/app-layout#^2.0.0",
     "app-route": "PolymerElements/app-route#^2.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
@@ -45,7 +45,8 @@
     "iron-form-element-behavior": "1 - 2",
     "paper-ripple": "1 - 2",
     "paper-styles": "1 - 2",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "dory-layout": "master"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"

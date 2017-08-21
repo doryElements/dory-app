@@ -192,6 +192,7 @@
             }
 
             _routePageChanged(page) {
+                console.log('_routePageChanged to ==> ', page);
                 this.page = page || 'list';
 
                 // Close a non-persistent drawer when the page & route are changed.
@@ -211,6 +212,18 @@
                 );
             }
 
+            changeUrl(page, entityId) {
+                const newRoute = JSON.parse(JSON.stringify(this.route));
+                newRoute.path = '/' + page;
+                if (entityId) {
+                    newRoute.path += '/' + entityId;
+                }
+                this.route = newRoute;
+                console.log('changeUrl to ==> ', page);
+
+
+//                this.page = page;
+            }
             _showPage404() {
                 this.page = 'view404';
             }
@@ -218,18 +231,20 @@
             _handleLoginSuccessEvent(e) {
                 const user = e.detail.user;
                 console.log('Login Sucess Event for user', user);
-                this.page = 'list';
+                this.changeUrl('list');
             }
 
             _handleEdit(e) {
-                this.set('entityId', e.detail.id);
-                this.page = 'editor';
+                const entityId=  e.detail.id;
+                this.set('entityId',entityId);
+                this.changeUrl('editor', entityId);
             }
 
 
             _handleDetails(e) {
-                this.set('entityId', e.detail.id);
-                this.page = 'show';
+                const entityId=  e.detail.id;
+                this.set('entityId',entityId);
+                this.changeUrl('show', entityId);
             }
 
             _handleErrorEvent(e) {
