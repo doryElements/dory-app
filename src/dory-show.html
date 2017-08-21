@@ -5,39 +5,47 @@
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="dory-show">
-  <template>
+<template>
     <style include="shared-styles">
-      :host {
+    :host {
         display: block;
-      }
-    </style>
-
-    <app-header slot="header" condenses reveals effects="waterfall">
-        <app-toolbar>
-          <div main-title>DORY - Dépendances des applications</div>
-        </app-toolbar>
-    </app-header>
-
-    <div class="main-content">
-      <dory-sam-card-details entity-id="[[entityId]]"></dory-sam-card-details>
-    </div>
-  </template>
-
-  <script>
-    class DoryShow extends Polymer.Element {
-      static get is() { return 'dory-show'; }
-      static get properties() {
-          return {
-              entityId: {
-                 type: String,
-              },
-              logo: {
-                  type: String,
-              },
-          };
-      }
     }
 
-    window.customElements.define(DoryShow.is, DoryShow);
-  </script>
+    app-toolbar {
+        height: 100px;
+        background-color: white;
+        padding: 0;
+    }
+    </style>
+
+    <app-header-layout fullbleed>
+        <app-header slot="header" condenses reveals effects="waterfall">
+            <app-toolbar>
+                <div main-title>DORY - Dépendances des applications</div>
+            </app-toolbar>
+        </app-header>
+
+        <div class="main-content">
+            <dory-sam-card-details entity-id="[[entityId]]"></dory-sam-card-details>
+        </div>
+    </app-header-layout>
+
+</template>
+
+    <script>
+        class DoryShow extends Polymer.Element {
+            static get is() { return 'dory-show'; }
+            static get properties() {
+                return {
+                    entityId: {
+                        type: String,
+                    },
+                    logo: {
+                        type: String,
+                    },
+                };
+            }
+        }
+        window.customElements.define(DoryShow.is, DoryShow);
+    </script>
 </dom-module>
