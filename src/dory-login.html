@@ -44,8 +44,8 @@
         </style>
         <div class="container">
             <div class="form">
-                <paper-input class="form-control" label="username" value="{{data.username}}" required></paper-input>
-                <paper-input class="form-control" label="password" type="password" value="{{data.password}}" required></paper-input>
+                <paper-input id="username" error-message="[[errorMessage]]" class="form-control" label="username" value="{{data.username}}" required></paper-input>
+                <paper-input id="password" error-message="[[errorMessage]]" class="form-control" label="password" type="password" value="{{data.password}}" required></paper-input>
                 <paper-button class="form-button" on-tap="_handleLogin">Login</paper-button>
             </div>
         </div>
@@ -77,11 +77,16 @@
                                 password: 'sarah123'
                             }
                         }
+                    },
+                    errorMessage: {
+                        type: String,
+                        notify: true
                     }
                 };
             }
 
             _handleLogin(e) {
+                this.errorMessage = undefined;
                 const myHeaders = new Headers({
                     'Accept': 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -95,13 +100,51 @@
                     headers: myHeaders,
                     credentials: 'same-origin',
                     body: formBody
-                }).then(response => {
+                }).then(this._checkResponseStatus.bind(this)).then(response => {
                     return response.json();
                 }).then(json => {
                     this.fireLoginSucess(json);
                     return json;
-                })
+                }).catch(this._handleErrorRetrieve.bind(this));
             }
+
+            _isResponseJson(response) {
+                const contentType = response.headers.get('content-type');
+                return (contentType && contentType.indexOf('application/json') !== -1)
+            };
+
+
+            _checkResponseStatus(response) {
+                if (!response.ok) {
+                    const error = new Error(response.status + ' (' + response.statusText + ')');
+                    error.status = response.status;
+                    error.statusText = response.statusText;
+                    // Manage
+                    if (this._isResponseJson(response)) {
+                        return response.json().then(function (json) {
+                            error.responseJson = json;
+                            error.responseText = JSON.stringify(json);
+                            return Promise.reject(error);
+                        });
+                    } else {
+                        return response.text().then(function (text) {
+                            error.responseText = text;
+                            return Promise.reject(error);
+                        });
+                    }
+                }
+                return response;
+            };
+
+            _handleErrorRetrieve(e) {
+                    const status = e.status;
+                    console.log('_handle Error status :', status);
+                    console.log('_handle Error Text :', e.responseText);
+                    this.errorMessage = 'mauvais mot de passe ou identifiant inexistant';
+                    // FIXME display Error
+                    return e;
+            }
+
 
             fireLoginSucess(user) {
                 console.log('LoginSucess', JSON.stringify(user));

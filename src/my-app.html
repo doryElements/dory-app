@@ -121,18 +121,27 @@
             constructor() {
                 super();
                 this._boundListenerErrorEvent = this._handleErrorEvent.bind(this);
+                this._boundListenerLoginSucessEvent = this._handleLoginSuccessEvent.bind(this);
+
             }
 
             connectedCallback() {
                 super.connectedCallback();
+                // Error
                 this.addEventListener('dory-request-error', this._boundListenerErrorEvent);
                 this.addEventListener('air-cruddy-error', this._boundListenerErrorEvent);
+                // Login
+                this.addEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
+
             }
 
             disconnectedCallback() {
                 super.disconnectedCallback();
+                // Error
                 this.removeEventListener('dory-request-error', this._boundListenerErrorEvent);
                 this.removeEventListener('air-cruddy-error', this._boundListenerErrorEvent);
+                // Login
+                this.removeEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
             }
 
             ready() {
@@ -157,16 +166,21 @@
                         reflectToAttribute: true,
                         observer: '_pageChanged',
                     },
-                    routeData: Object,
-                    subroute: String,
-                    // This shouldn't be neccessary, but the Analyzer isn't picking up
-                    // Polymer.Element#rootPath
-                    rootPath: String,
+                    routeData: {
+                        type: Object,
+                        notify: true
+                    },
+                    subroute: {
+                        type: Object,
+                        notify: true
+                    },
                     entityId: {
                         type: String,
+                        notify: true
                     },
                     lastError: {
                         type: Object,
+                        notify: true
                     },
                 };
             }
@@ -199,6 +213,12 @@
 
             _showPage404() {
                 this.page = 'view404';
+            }
+
+            _handleLoginSuccessEvent(e) {
+                const user = e.detail.user;
+                console.log('Login Sucess Event for user', user);
+                this.page = 'list';
             }
 
             _handleEdit(e) {
