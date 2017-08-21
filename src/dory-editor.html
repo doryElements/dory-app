@@ -10,12 +10,18 @@
         <style include="shared-styles">
             :host {
                 display: block;
+                --earth-layout-header-text-color : black;
+                --earth-layout-header-background-color : white;
+            }
+
+            .content{
+                background-color: var(--background-color);
             }
         </style>
 
         <earth-cruddy id="earth">
             <div slot="title">Edition: [[data.app]]</div>
-            <div slot="content">
+            <div slot="content" class="content">
                 <air-cruddy id="cruddy"
                             mode="cors"
                             url="/api/sams"
