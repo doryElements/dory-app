@@ -98,12 +98,13 @@
                     attr-for-selected="name"
                     fallback-selection="view404"
                     role="main">
-                    <dory-login name="login" id="doryLogin"></dory-login>
+                    <dory-login name="login"></dory-login>
                     <dory-list name="list" id="doryList"></dory-list>
                     <dory-servers-list name="servers-list"></dory-servers-list>
                     <dory-bdds-list name="bdds-list"></dory-bdds-list>
                     <dory-show name="show" entity-id="[[entityId]]"></dory-show>
                     <dory-editor name="editor" entity-id="[[entityId]]"></dory-editor>
+                    <dory-error name="error"  error="[[lastError]]"></dory-error>
                     <dory-view404 name="view404"></dory-view404>
                 </iron-pages>
             </app-header-layout>
@@ -114,8 +115,26 @@
         class MyApp extends Polymer.Element {
             static get is() { return 'my-app'; }
 
+            constructor() {
+                super();
+                this._boundListenerErrorEvent = this._handleErrorEvent.bind(this);
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+                this.addEventListener('dory-request-error', this._boundListenerErrorEvent);
+                this.addEventListener('air-cruddy-error', this._boundListenerErrorEvent);
+            }
+
+            disconnectedCallback() {
+                super.disconnectedCallback();
+                this.removeEventListener('dory-request-error', this._boundListenerErrorEvent);
+                this.removeEventListener('air-cruddy-error', this._boundListenerErrorEvent);
+            }
+
             ready() {
                 super.ready();
+                // TODO dory-login-success
                 this.$.doryList.addEventListener('dory-open-editor', (e) => {
                     this._handleEdit(e);
                 });
@@ -128,6 +147,7 @@
                 return {
                     page: {
                         type: String,
+                        notify: true,
                         reflectToAttribute: true,
                         observer: '_pageChanged',
                     },
@@ -138,6 +158,9 @@
                     rootPath: String,
                     entityId: {
                         type: String,
+                    },
+                    lastError: {
+                        type: Object,
                     },
                 };
             }
@@ -181,6 +204,17 @@
             _handleDetails(e) {
                 this.set('entityId', e.detail.id);
                 this.page = 'show';
+            }
+
+            _handleErrorEvent(e) {
+                const detail = e.detail;
+                this.lastError= detail;
+                const status = detail.status;
+                if (status === 401) {
+                    this.page = 'login';
+                } else {
+                    this.page = 'error';
+                }
             }
         }
         window.customElements.define(MyApp.is, MyApp);

@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="dory-error">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <h2>Error [[error.status]] : [[error.responseJson.message]]!</h2>
+    </template>
+
+    <script>
+        /**
+         * `dory-error`
+         *
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class DoryError extends Polymer.Element {
+            static get is() {
+                return 'dory-error';
+            }
+
+            static get properties() {
+                return {
+                    error: {
+                        type: Object
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(DoryError.is, DoryError);
+    </script>
+</dom-module>
