@@ -21,7 +21,7 @@
   "resolutions": {
     "polymer": "^2.0.0",
     "air-cascade-validator": "^2.0.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
     "polymer": "^2.0.0",
     "iron-flex-layout": "^2.0.0",
     "iron-media-query": "^2.0.0",
