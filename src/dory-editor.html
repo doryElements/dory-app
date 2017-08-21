@@ -40,6 +40,12 @@
                     },
                 };
             }
+            ready() {
+                super.ready();
+                this.$.earth.addEventListener('earth-layout-close', (e)=>{
+                    this.dispatchEvent(new CustomEvent('dory-editor-close'));
+                });
+            }
         }
 
         window.customElements.define(DoryEditor.is, DoryEditor);
