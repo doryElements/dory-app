@@ -14,8 +14,8 @@
 
 <link rel="lazy-import" href="dory-login.html">
 <link rel="lazy-import" href="dory-list.html">
-<link rel="lazy-import" href="servers-list.html">
-<link rel="lazy-import" href="bdds-list.html">
+<link rel="lazy-import" href="dory-servers-list.html">
+<link rel="lazy-import" href="dory-bdds-list.html">
 <link rel="lazy-import" href="dory-editor.html">
 <link rel="lazy-import" href="dory-show.html">
 <link rel="lazy-import" href="dory-view404.html">
@@ -85,8 +85,8 @@
             <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
                 <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica"></app-toolbar>
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                    <a name="dory-login" href="/#/dory-login">Login</a>
-                    <a name="dory-list" href="/#/dory-list">Toutes les applications</a>
+                    <a name="dory-login" href="/#/login">Login</a>
+                    <a name="dory-list" href="/#/list">Toutes les applications</a>
                     <a name="servers-list" href="/#/servers-list">Tous les serveurs</a>
                     <a name="bdds-list" href="/#/bdds-list">Toutes les bases de données</a>
                 </iron-selector>
@@ -98,12 +98,12 @@
                     attr-for-selected="name"
                     fallback-selection="view404"
                     role="main">
-                    <dory-login name="dory-login" id="doryLogin"></dory-login>
-                    <dory-list name="dory-list" id="doryList"></dory-list>
-                    <servers-list name="servers-list"></servers-list>
-                    <bdds-list name="bdds-list"></bdds-list>
-                    <dory-show name="dory-show" entity-id="[[entityId]]"></dory-show>
-                    <dory-editor name="dory-editor" entity-id="[[entityId]]"></dory-editor>
+                    <dory-login name="login" id="doryLogin"></dory-login>
+                    <dory-list name="list" id="doryList"></dory-list>
+                    <dory-servers-list name="servers-list"></dory-servers-list>
+                    <dory-bdds-list name="bdds-list"></dory-bdds-list>
+                    <dory-show name="show" entity-id="[[entityId]]"></dory-show>
+                    <dory-editor name="editor" entity-id="[[entityId]]"></dory-editor>
                     <dory-view404 name="view404"></dory-view404>
                 </iron-pages>
             </app-header-layout>
@@ -159,7 +159,7 @@
 
             _pageChanged(page) {
                 // Load page import on demand. Show 404 page if fails
-                const resolvedPageUrl = this.resolveUrl(page + '.html');
+                const resolvedPageUrl = this.resolveUrl('dory-'+page + '.html');
                 Polymer.importHref(
                     resolvedPageUrl,
                     null,
@@ -169,18 +169,18 @@
             }
 
             _showPage404() {
-                this.page = 'dory-view404';
+                this.page = 'view404';
             }
 
             _handleEdit(e) {
                 this.set('entityId', e.detail.id);
-                this.page = 'dory-editor';
+                this.page = 'editor';
             }
 
 
             _handleDetails(e) {
                 this.set('entityId', e.detail.id);
-                this.page = 'dory-show';
+                this.page = 'show';
             }
         }
         window.customElements.define(MyApp.is, MyApp);

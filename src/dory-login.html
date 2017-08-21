@@ -60,14 +60,16 @@
                     credentials: 'same-origin',
                     body: formBody
                 }).then(response => {
-                    return response.json()
+                    return response.json();
                 }).then(json => {
-                    console.log(JSON.stringify(json));
+                    this.fireLoginSucess(json);
+                    return json;
                 })
             }
 
-            fireLoginSucess(e) {
-
+            fireLoginSucess(user) {
+                console.log('LoginSucess', JSON.stringify(user));
+                this.dispatchEvent(new CustomEvent('dory-login-success', {detail: {user}, bubbles: true, composed: true}));
             }
 
         }
