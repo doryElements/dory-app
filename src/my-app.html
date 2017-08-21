@@ -49,8 +49,11 @@
             .logo-toolbar {
                 background-color: var(--logo-background-color);
                 height : 100px;
-                padding: 5px;
-                text-align: center;
+            }
+
+            .logo {
+                margin-right: auto;
+                margin-left: auto;
             }
 
             .drawer-list {
@@ -70,7 +73,7 @@
                 font-weight: bold;
             }
 
-            app-header-layout{
+            iron-pages{
                 background-color: var(--background-color);
             }
         </style>
@@ -83,7 +86,7 @@
             tail="{{subroute}}"></app-route>
         <app-drawer-layout fullbleed narrow="{{narrow}}">
             <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
-                <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica"></app-toolbar>
+                <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica" class="logo"></app-toolbar>
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                     <a name="dory-login" href="/#/login">Login</a>
                     <a name="dory-list" href="/#/list">Toutes les applications</a>
@@ -103,7 +106,7 @@
                     <dory-servers-list name="servers-list"></dory-servers-list>
                     <dory-bdds-list name="bdds-list"></dory-bdds-list>
                     <dory-show name="show" entity-id="[[entityId]]"></dory-show>
-                    <dory-editor name="editor" entity-id="[[entityId]]"></dory-editor>
+                    <dory-editor name="editor" id="doryEditor" entity-id="[[entityId]]"></dory-editor>
                     <dory-view404 name="view404"></dory-view404>
                 </iron-pages>
             </app-header-layout>
@@ -121,6 +124,9 @@
                 });
                 this.$.doryList.addEventListener('dory-open-details', (e) => {
                     this._handleDetails(e);
+                });
+                this.$.doryEditor.addEventListener('dory-editor-close', (e) => {
+                    this.page = 'list';
                 });
             }
 
@@ -149,7 +155,7 @@
             }
 
             _routePageChanged(page) {
-                this.page = page || 'dory-list';
+                this.page = page || 'list';
 
                 // Close a non-persistent drawer when the page & route are changed.
                 if (!this.$.drawer.persistent) {
