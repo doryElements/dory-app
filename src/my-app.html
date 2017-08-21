@@ -89,6 +89,7 @@
                 <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica" class="logo"></app-toolbar>
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                     <!--<a name="dory-login" href="/#/login">Login</a>-->
+                    <!--<a name="dory-list" href="/#/sam-page/list">Toutes les applications</a>-->
                     <a name="dory-list" href="/#/list">Toutes les applications</a>
                     <a name="servers-list" href="/#/servers-list">Tous les serveurs</a>
                     <a name="bdds-list" href="/#/bdds-list">Toutes les bases de données</a>
@@ -102,9 +103,12 @@
                     fallback-selection="view404"
                     role="main">
                     <dory-login name="login"></dory-login>
+                    <!--<dory-sam-page name="sam-page" route="{{subroute}}"></dory-sam-page>-->
+
                     <dory-list name="list" id="doryList"></dory-list>
                     <dory-show name="show" entity-id="[[entityId]]"></dory-show>
                     <dory-editor name="editor" id="doryEditor" entity-id="[[entityId]]"></dory-editor>
+
                     <dory-servers-list name="servers-list"></dory-servers-list>
                     <dory-bdds-list name="bdds-list"></dory-bdds-list>
                     <dory-error name="error"  error="[[lastError]]"></dory-error>
@@ -148,13 +152,15 @@
                 super.ready();
                 // TODO dory-login-success
                 this.$.doryList.addEventListener('dory-open-editor', (e) => {
-                    this._handleEdit(e);
+                    const id=  e.detail.id;
+                    this._handleChangePageEvent({ page:'editor', id});
                 });
                 this.$.doryList.addEventListener('dory-open-details', (e) => {
-                    this._handleDetails(e);
+                    const id=  e.detail.id;
+                    this._handleChangePageEvent({ page:'show', id});
                 });
                 this.$.doryEditor.addEventListener('dory-editor-close', (e) => {
-                    this.page = 'list';
+                    this._handleChangePageEvent({ page:'list' });
                 });
             }
 
@@ -234,18 +240,12 @@
                 this.changeUrl('list');
             }
 
-            _handleEdit(e) {
-                const entityId=  e.detail.id;
+            _handleChangePageEvent(opt) {
+                const entityId=  opt.id;
                 this.set('entityId',entityId);
-                this.changeUrl('editor', entityId);
+                this.changeUrl(opt.page, entityId);
             }
 
-
-            _handleDetails(e) {
-                const entityId=  e.detail.id;
-                this.set('entityId',entityId);
-                this.changeUrl('show', entityId);
-            }
 
             _handleErrorEvent(e) {
                 const detail = e.detail;

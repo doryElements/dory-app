@@ -1,0 +1,67 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../bower_components/earth-crud-pages/earth-crud-pages.html">
+
+<link rel="import" href="dory-list.html">
+<link rel="lazy-import" href="dory-show.html">
+<link rel="import" href="dory-editor.html">
+
+<dom-module id="dory-sam-page">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <earth-crud-pages  route="{{route}}" route-edit-data="{{editData}}">
+            <dory-list page="list" id="doryList"></dory-list>
+            <dory-show page="show" entity-id="[[editData.id]]"></dory-show>
+            <dory-editor page="editor" id="doryEditor" entity-id="[[editData.id]]"></dory-editor>
+        </earth-crud-pages>
+    </template>
+
+    <script>
+        /**
+         * `dory-sam`
+         *
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class DorySamPage extends Polymer.Element {
+            static get is() {
+                return 'dory-sam-page';
+            }
+
+//            ready() {
+//                super.ready();
+//                // TODO dory-login-success
+//                this.$.doryList.addEventListener('dory-open-editor', (e) => {
+//                    this._handleEdit(e);
+//                });
+//                this.$.doryList.addEventListener('dory-open-details', (e) => {
+//                    this._handleDetails(e);
+//                });
+//                this.$.doryEditor.addEventListener('dory-editor-close', (e) => {
+//                    this.page = 'list';
+//                });
+//            }
+
+            static get properties() {
+                return {
+                    route: {
+                        type: Object,
+                        notify: true
+                    },
+                    editData: {
+                        type: Object,
+                        notify: true
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(DorySamPage.is, DorySamPage);
+    </script>
+</dom-module>
