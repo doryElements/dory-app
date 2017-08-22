@@ -7,21 +7,27 @@
 <dom-module id="dory-show">
 <template>
     <style include="shared-styles">
-    :host {
-        display: block;
-    }
+        :host {
+            display: block;
+        }
 
-    app-toolbar {
-        height: 100px;
-        background-color: white;
-        padding: 0;
-    }
+        app-toolbar {
+            height: 100px;
+            background-color: white;
+            padding: 0;
+        }
+
+        paper-icon-button {
+            position: fixed;
+            right: 30px;
+        }
     </style>
 
     <app-header-layout fullbleed>
         <app-header slot="header" condenses reveals effects="waterfall">
             <app-toolbar>
                 <div main-title>DORY - Dépendances des applications</div>
+                <paper-icon-button icon="create" on-tap="_handleEdit"></paper-icon-button>
             </app-toolbar>
         </app-header>
 
@@ -44,6 +50,10 @@
                         type: String,
                     },
                 };
+            }
+
+            _handleEdit() {
+                this.dispatchEvent(new CustomEvent('dory-open-editor', {detail: {id: this.entityId}}));
             }
         }
         window.customElements.define(DoryShow.is, DoryShow);

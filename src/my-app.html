@@ -105,7 +105,7 @@
                     <!--<dory-sam-page name="sam-page" route="{{subroute}}"></dory-sam-page>-->
 
                     <dory-list name="list" id="doryList"></dory-list>
-                    <dory-show name="show" entity-id="[[entityId]]"></dory-show>
+                    <dory-show name="show" id="doryShow" entity-id="[[entityId]]"></dory-show>
                     <dory-editor name="editor" id="doryEditor" entity-id="[[entityId]]"></dory-editor>
 
                     <dory-servers-list name="servers-list"></dory-servers-list>
@@ -160,6 +160,10 @@
                 });
                 this.$.doryEditor.addEventListener('dory-editor-close', (e) => {
                     this._handleChangePageEvent({ page:'list' });
+                });
+                this.$.doryShow.addEventListener('dory-open-editor',(e) => {
+                    const id=  e.detail.id;
+                    this._handleChangePageEvent({ page:'editor', id});
                 });
             }
 
