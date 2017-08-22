@@ -189,6 +189,11 @@
                 this.listData=[];
                 this.shadowRoot.querySelector('#request').createRequest(this.searchText);
             }
+
+            search() {
+                return this.$.request.createRequest(this.searchText);
+            }
+
         }
         window.customElements.define(DoryList.is, DoryList);
     </script>
