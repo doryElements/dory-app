@@ -13,7 +13,7 @@
                 display: block;
             }
         </style>
-        <earth-crud-pages  route="{{route}}" route-data="{{editData}}">
+        <earth-crud-pages  route="{{route}}" route-data="{{editData}}" fallback-selection="list">
             <dory-list page="list" id="doryList"></dory-list>
             <dory-show page="show" id="doryShow" entity-id="[[editData.id]]"></dory-show>
             <dory-editor page="edit" id="doryEditor" entity-id="[[editData.id]]"></dory-editor>
