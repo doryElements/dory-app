@@ -7,8 +7,13 @@
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/vaadin-icons/vaadin-icons.html">
+
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-icons.html">
 
@@ -76,6 +81,14 @@
             iron-pages{
                 background-color: var(--background-color);
             }
+
+            iron-icon {
+                margin-right: 10px;
+            }
+
+            a{
+                margin: 10px 0 10px 0;
+            }
         </style>
 
         <app-location route="{{route}}" use-hash-as-path></app-location>
@@ -88,11 +101,9 @@
             <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
                 <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica" class="logo"></app-toolbar>
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                    <!--<a name="dory-login" href="/#/login">Login</a>-->
-                    <!--<a name="dory-list" href="/#/sam-page/list">Toutes les applications</a>-->
-                    <a name="dory-list" href="/#/list">Toutes les applications</a>
-                    <a name="servers-list" href="/#/servers-list">Tous les serveurs</a>
-                    <a name="bdds-list" href="/#/bdds-list">Toutes les bases de données</a>
+                    <a name="dory-list" href="/#/list"><iron-icon icon="tab" style="--iron-icon-fill-color:#FFC107"></iron-icon>Applications</a>
+                    <a name="servers-list" href="/#/servers-list"><iron-icon icon="vaadin:server" style="--iron-icon-fill-color:#A1887F"></iron-icon>Serveurs</a>
+                    <a name="bdds-list" href="/#/bdds-list"><iron-icon icon="vaadin:database" style="--iron-icon-fill-color:#E65100"></iron-icon>Bases de données</a>
                 </iron-selector>
             </app-drawer>
                 <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>

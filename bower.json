@@ -26,7 +26,8 @@
     "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
     "paper-toast": "PolymerElements/paper-toast#^2.0.0",
     "prism-element": "PolymerElements/prism-element#^2.0.1",
-    "earth-crud-pages": "FiveElements/earth-crud-pages#master"
+    "earth-crud-pages": "FiveElements/earth-crud-pages#master",
+    "vaadin-icons": "vaadin/vaadin-icons"
   },
   "resolutions": {
     "polymer": "^2.0.0",
