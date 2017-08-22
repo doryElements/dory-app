@@ -67,7 +67,7 @@
         </style>
 
         <app-header-layout fullbleed>
-            <app-header slot="header" condenses reveals effects="waterfall">
+            <app-header>
                 <iron-pages selected="[[tabSelected]]" fallback-selection="fallback">
                     <app-toolbar>
                         <div main-title>DORY - Dépendances des applications</div>
@@ -84,9 +84,9 @@
             </app-header>
 
             <div class="content" on-scroll="_handleContentScroll" id="content">
-                <dory-request id="request" url="[[url]]" data="{{listData}}"></dory-request>
                 <dory-sam-list id="dorySamList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
                 <paper-fab  icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
+                <dory-request id="request" url="[[url]]" data="{{listData}}" size="20"></dory-request>
             </div>
         </app-header-layout>
     </template>
