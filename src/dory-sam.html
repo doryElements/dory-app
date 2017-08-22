@@ -3,20 +3,20 @@
 <link rel="import" href="../bower_components/earth-crud-pages/earth-crud-pages.html">
 
 <link rel="import" href="dory-list.html">
-<link rel="lazy-import" href="dory-show.html">
+<link rel="import" href="dory-show.html">
 <link rel="import" href="dory-editor.html">
 
-<dom-module id="dory-sam-page">
+<dom-module id="dory-sam">
     <template>
         <style>
             :host {
                 display: block;
             }
         </style>
-        <earth-crud-pages  route="{{route}}" route-edit-data="{{editData}}">
+        <earth-crud-pages  route="{{route}}" route-data="{{editData}}">
             <dory-list page="list" id="doryList"></dory-list>
-            <dory-show page="show" entity-id="[[editData.id]]"></dory-show>
-            <dory-editor page="editor" id="doryEditor" entity-id="[[editData.id]]"></dory-editor>
+            <dory-show page="show" id="doryShow" entity-id="[[editData.id]]"></dory-show>
+            <dory-editor page="edit" id="doryEditor" entity-id="[[editData.id]]"></dory-editor>
         </earth-crud-pages>
     </template>
 
@@ -29,17 +29,18 @@
          * @polymer
          * @demo demo/index.html
          */
-        class DorySamPage extends Polymer.Element {
+        class DorySam extends Polymer.Element {
             static get is() {
-                return 'dory-sam-page';
+                return 'dory-sam';
             }
+
+
 
             ready() {
                 super.ready();
-                // TODO dory-login-success
                 this.$.doryList.addEventListener('dory-open-editor', (e) => {
                     const id=  e.detail.id;
-                    this._handleChangePageEvent({ page:'editor', id});
+                    this._handleChangePageEvent({ page:'edit', id});
                 });
                 this.$.doryList.addEventListener('dory-open-details', (e) => {
                     const id=  e.detail.id;
@@ -48,11 +49,18 @@
                 this.$.doryEditor.addEventListener('dory-editor-close', (e) => {
                     this._handleChangePageEvent({ page:'list' });
                 });
+                this.$.doryShow.addEventListener('dory-open-editor',(e) => {
+                    const id=  e.detail.id;
+                    this._handleChangePageEvent({ page:'editor', id});
+                });
             }
 
             _handleChangePageEvent(opt) {
-                const entityId=  opt.id;
-//                this.set('entityId',entityId);
+                let path = '/' + opt.page;
+                if (opt.id) {
+                    path +=  '/' + opt.id;
+                }
+                this.set('route.path',path);
 //                this.changeUrl(opt.page, entityId);
             }
 
@@ -70,6 +78,6 @@
             }
         }
 
-        window.customElements.define(DorySamPage.is, DorySamPage);
+        window.customElements.define(DorySam.is, DorySam);
     </script>
 </dom-module>

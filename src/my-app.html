@@ -18,11 +18,10 @@
 <link rel="import" href="my-icons.html">
 
 <link rel="lazy-import" href="dory-login.html">
-<link rel="lazy-import" href="dory-list.html">
+<link rel="lazy-import" href="dory-sam.html">
+
 <link rel="lazy-import" href="dory-servers-list.html">
 <link rel="lazy-import" href="dory-bdds-list.html">
-<link rel="lazy-import" href="dory-editor.html">
-<link rel="lazy-import" href="dory-show.html">
 <link rel="lazy-import" href="dory-view404.html">
 
 <dom-module id="my-app">
@@ -101,7 +100,7 @@
             <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
                 <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica" class="logo"></app-toolbar>
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                    <a name="dory-list" href="/#/list"><iron-icon icon="tab" style="--iron-icon-fill-color:#FFC107"></iron-icon>Applications</a>
+                    <a name="dory-list" href="/#/sam/list"><iron-icon icon="tab" style="--iron-icon-fill-color:#FFC107"></iron-icon>Applications</a>
                     <a name="servers-list" href="/#/servers-list"><iron-icon icon="vaadin:server" style="--iron-icon-fill-color:#A1887F"></iron-icon>Serveurs</a>
                     <a name="bdds-list" href="/#/bdds-list"><iron-icon icon="vaadin:database" style="--iron-icon-fill-color:#E65100"></iron-icon>Bases de données</a>
                 </iron-selector>
@@ -113,11 +112,7 @@
                     fallback-selection="view404"
                     role="main">
                     <dory-login name="login"></dory-login>
-                    <!--<dory-sam-page name="sam-page" route="{{subroute}}"></dory-sam-page>-->
-
-                    <dory-list name="list" id="doryList"></dory-list>
-                    <dory-show name="show" id="doryShow" entity-id="[[entityId]]"></dory-show>
-                    <dory-editor name="editor" id="doryEditor" entity-id="[[entityId]]"></dory-editor>
+                    <dory-sam name="sam" route="{{subroute}}"></dory-sam>
 
                     <dory-servers-list name="servers-list"></dory-servers-list>
                     <dory-bdds-list name="bdds-list"></dory-bdds-list>
@@ -158,25 +153,7 @@
                 this.removeEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
             }
 
-            ready() {
-                super.ready();
-                // TODO dory-login-success
-                this.$.doryList.addEventListener('dory-open-editor', (e) => {
-                    const id=  e.detail.id;
-                    this._handleChangePageEvent({ page:'editor', id});
-                });
-                this.$.doryList.addEventListener('dory-open-details', (e) => {
-                    const id=  e.detail.id;
-                    this._handleChangePageEvent({ page:'show', id});
-                });
-                this.$.doryEditor.addEventListener('dory-editor-close', (e) => {
-                    this._handleChangePageEvent({ page:'list' });
-                });
-                this.$.doryShow.addEventListener('dory-open-editor',(e) => {
-                    const id=  e.detail.id;
-                    this._handleChangePageEvent({ page:'editor', id});
-                });
-            }
+
 
             static get properties() {
                 return {
@@ -212,7 +189,6 @@
             }
 
             _routePageChanged(page) {
-                console.log('_routePageChanged to ==> ', page);
                 this.page = page || 'list';
 
                 // Close a non-persistent drawer when the page & route are changed.
@@ -233,16 +209,11 @@
             }
 
             changeUrl(page, entityId) {
-                const newRoute = JSON.parse(JSON.stringify(this.route));
-                newRoute.path = '/' + page;
+                let path = '/' + page;
                 if (entityId) {
-                    newRoute.path += '/' + entityId;
+                    path += '/' + entityId;
                 }
-                this.route = newRoute;
-                console.log('changeUrl to ==> ', page);
-
-
-//                this.page = page;
+                this.set('route.path', path);
             }
             _showPage404() {
                 this.page = 'view404';
@@ -251,14 +222,10 @@
             _handleLoginSuccessEvent(e) {
                 const user = e.detail.user;
                 console.log('Login Sucess Event for user', user);
-                this.changeUrl('list');
+                this.changeUrl('sam/list');
             }
 
-            _handleChangePageEvent(opt) {
-                const entityId=  opt.id;
-                this.set('entityId',entityId);
-                this.changeUrl(opt.page, entityId);
-            }
+
 
 
             _handleErrorEvent(e) {
