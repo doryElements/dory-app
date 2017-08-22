@@ -2,6 +2,7 @@
 
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 
 <dom-module id="dory-login">
@@ -40,16 +41,20 @@
                 float : right;
             }
 
+            #errorToast {
+                --paper-toast-background-color: red;
+                --paper-toast-color: white;
+            }
 
         </style>
         <div class="container">
-            <div class="form">
-                <paper-input id="username" error-message="[[errorMessage]]" class="form-control" label="username" value="{{data.username}}" required></paper-input>
-                <paper-input id="password" error-message="[[errorMessage]]" class="form-control" label="password" type="password" value="{{data.password}}" required></paper-input>
+            <div id="form" class="form">
+                <paper-input id="username" error-message="[[errorMessage]]" class="form-control" label="Username" value="{{data.username}}" required></paper-input>
+                <paper-input id="password" error-message="[[errorMessage]]" class="form-control" label="Password" type="password" value="{{data.password}}" required></paper-input>
                 <paper-button class="form-button" on-tap="_handleLogin">Login</paper-button>
             </div>
         </div>
-
+        <paper-toast id="errorToast" class="fit-top" text="[[errorMessage]]"></paper-toast>
     </template>
 
     <script>
@@ -137,12 +142,13 @@
             };
 
             _handleErrorRetrieve(e) {
-                    const status = e.status;
-                    console.log('_handle Error status :', status);
-                    console.log('_handle Error Text :', e.responseText);
-                    this.errorMessage = 'mauvais mot de passe ou identifiant inexistant';
-                    // FIXME display Error
-                    return e;
+                const status = e.status;
+                console.log('_handle Error status :', status);
+                console.log('_handle Error Text :', e.responseText);
+                this.errorMessage = 'Mauvais mot de passe ou identifiant inexistant';
+                this.$.errorToast.fitInto = this.$.form;
+                this.$.errorToast.show();
+                return e;
             }
 
 
@@ -152,7 +158,6 @@
             }
 
         }
-
         window.customElements.define(DoryLogin.is, DoryLogin);
     </script>
 </dom-module>
