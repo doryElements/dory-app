@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -47,14 +48,14 @@
             }
 
         </style>
-        <div class="container">
-            <div id="form" class="form">
-                <paper-input id="username" error-message="[[errorMessage]]" class="form-control" label="Username" value="{{data.username}}" required></paper-input>
-                <paper-input id="password" error-message="[[errorMessage]]" class="form-control" label="Password" type="password" value="{{data.password}}" required></paper-input>
-                <paper-button class="form-button" on-tap="_handleLogin">Login</paper-button>
+            <div class="container">
+                <div id="form" class="form">
+                    <paper-input id="username" error-message="[[errorMessage]]" class="form-control" label="Username" value="{{data.username}}" required></paper-input>
+                    <paper-input id="password" error-message="[[errorMessage]]" class="form-control" label="Password" type="password" value="{{data.password}}" required></paper-input>
+                    <paper-button class="form-button" on-tap="_handleLogin">Login</paper-button>
+                </div>
             </div>
-        </div>
-        <paper-toast id="errorToast" class="fit-top" text="[[errorMessage]]"></paper-toast>
+            <paper-toast id="errorToast" class="fit-top" text="[[errorMessage]]"></paper-toast>
     </template>
 
     <script>
@@ -86,6 +87,10 @@
                     errorMessage: {
                         type: String,
                         notify: true
+                    },
+                    user: {
+                        type: String,
+                        notify: true
                     }
                 };
             }
@@ -108,6 +113,7 @@
                 }).then(this._checkResponseStatus.bind(this)).then(response => {
                     return response.json();
                 }).then(json => {
+                    this.user = json.user;
                     this.fireLoginSucess(json);
                     return json;
                 }).catch(this._handleErrorRetrieve.bind(this));
@@ -157,6 +163,15 @@
                 this.dispatchEvent(new CustomEvent('dory-login-success', {detail: {user}, bubbles: true, composed: true}));
             }
 
+            logout() {
+                window.fetch('/api/logout', {
+                    method: 'GET',
+                    credentials: 'include'
+                }).then(result => {
+                    this.user= null;
+                    return result;
+                });
+            }
         }
         window.customElements.define(DoryLogin.is, DoryLogin);
     </script>
