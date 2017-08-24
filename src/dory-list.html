@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/debounce.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
@@ -12,6 +13,8 @@
 
 <link rel="import" href="../bower_components/dory-sam/dory-sam-list.html">
 <link rel="import" href="../bower_components/dory-layout/dory-request.html">
+
+<link rel="import" href="../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 
 <link rel="import" href="shared-styles.html">
 
@@ -92,7 +95,7 @@
     </template>
 
     <script>
-        class DoryList extends Polymer.Element {
+        class DoryList extends Polymer.mixinBehaviors([Polymer.IronA11yKeysBehavior], Polymer.Element) {
             static get is() { return 'dory-list'; }
 
             ready() {
@@ -139,6 +142,19 @@
                         type: Number,
                         value: 0,
                     },
+
+                    keyEventTarget: {
+                        type: Object,
+                        value: function() {
+                            return document.body;
+                        }
+                    }
+                };
+            }
+
+            get keyBindings() {
+                return {
+                    'ctrl+f': '_handleKeySearch'
                 };
             }
 
@@ -150,7 +166,6 @@
             _handleDetails(e) {
                 this.entityId = e.detail.id;
                 this.dispatchEvent(new CustomEvent('dory-open-details', {detail: {id: this.entityId}}));
-//                console.log('Dispatch Event dory-open-details');
             }
 
             _openEditorCreate() {
@@ -161,7 +176,7 @@
             _searchTextChanged(newValue) {
                 this._debouncer = Polymer.Debouncer.debounce(
                     this._debouncer,
-                    Polymer.Async.timeOut.after(this.delay),
+                    Polymer.Async.timeOut.after(500),
                     () => {
                         this.shadowRoot.querySelector('#request').createRequest(this.searchText);
                     }
@@ -180,6 +195,7 @@
                     this.$.search.focus();
                 }
                 else{
+                    this.$.search.blur();
                     this.tabSelected=0;
                 }
             }
@@ -194,6 +210,10 @@
                 return this.$.request.createRequest(this.searchText);
             }
 
+            _handleKeySearch(e){
+                e.preventDefault();
+                this._toggleSearchBar();
+            }
         }
         window.customElements.define(DoryList.is, DoryList);
     </script>
