@@ -1,22 +1,14 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/vaadin-icons/vaadin-icons.html">
 
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="my-icons.html">
 
 <link rel="import" href="dory-login.html">
+<link rel="import" href="dory-layout.html">
 <link rel="lazy-import" href="dory-sam.html">
 
 <link rel="lazy-import" href="dory-servers-list.html">
@@ -27,87 +19,15 @@
     <template>
         <style>
             :host {
-                --app-primary-color: #4285f4;
-                --app-secondary-color: white;
-                --h1-color: #FFD54F;
-                --h2-color:#FF6F00;
-                --h3-color: #FFAB40;
-                --h4-color: #80CBC4;
-                --logo-background-color: #FB8C00;
-                --sidebar-background-color: #424242;
-                --background-color: #EFEBE9;
                 display: block;
             }
 
-            app-drawer-layout:not([narrow]) [drawer-toggle] {
-                display: none;
-            }
-
-            app-drawer {
-                --app-drawer-content-container: {
-                    background-color: var(--sidebar-background-color);
-                }
-            }
-
-            .logo-toolbar {
-                background-color: var(--logo-background-color);
-                height : 100px;
-            }
-
-            .logo {
-                margin-right: auto;
-                margin-left: auto;
-            }
-
-            .drawer-list {
-                margin: 0 20px;
-            }
-
-            .drawer-list a {
-                display: block;
-                padding: 0 16px;
-                text-decoration: none;
-                color: var(--app-secondary-color);
-                line-height: 40px;
-            }
-
-            .drawer-list a.iron-selected {
-                color: var(--app-secondary-color);
-                font-weight: bold;
-            }
-
-            iron-pages{
+            iron-pages {
                 background-color: var(--background-color);
-            }
-
-            iron-icon {
-                margin-right: 10px;
-            }
-
-            a{
-                margin: 10px 0 10px 0;
-            }
-
-            .drawer-toggle {
-                position: absolute;
-                top: 110px;
-                left: 10px;
-            }
-
-            .user {
-                color: white;
-                padding: 5px;
-                margin-left: 40px;
-            }
-
-            #logout:hover {
-                font-weight: bold;
-                cursor: pointer;
             }
 
         </style>
 
-        <dory-login id="login" name="login" user="{{user}}"></dory-login>
 
         <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route
@@ -117,52 +37,36 @@
                 tail="{{subroute}}">
         </app-route>
 
-        <template is="dom-if" if="{{user}}" restamp>
+        <iron-pages selected="[[authPage]]" attr-for-selected="auth" fallback-selection="login">
+            <dory-login auth="login" id="login" name="login" user="{{user}}"></dory-login>
+            <dory-layout auth="app" id="doryLayout" page="[[page]]" user="{{user}}">
+                <template is="dom-if" if="{{user}}" restamp>
+                    <iron-pages selected="[[page]]" attr-for-selected="name"
+                                fallback-selection="view404" role="main">
+                        <dory-sam name="sam" route="{{subroute}}"></dory-sam>
+                        <dory-servers-list name="servers-list" route="{{subroute}}"></dory-servers-list>
+                        <dory-bdds-list name="bdds-list"></dory-bdds-list>
+                        <dory-error name="error" error="[[lastError]]"></dory-error>
+                        <dory-view404 name="view404"></dory-view404>
+                    </iron-pages>
+                </template>
+            </dory-layout>
+        </iron-pages>
 
-            <app-drawer-layout fullbleed narrow="{{narrow}}">
-                <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
-                    <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica" class="logo"></app-toolbar>
-
-                    <div class="user">
-                        <p>Bienvenue, [[user.name]] !</p>
-                        <p id="logout" on-tap="_handleLogout">Logout</p>
-                    </div>
-
-                    <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                        <a name="dory-list" href="/#/sam/list"><iron-icon icon="tab" style="--iron-icon-fill-color:#FFC107"></iron-icon>Applications</a>
-                        <a name="servers-list" href="/#/servers-list"><iron-icon icon="vaadin:server" style="--iron-icon-fill-color:#A1887F"></iron-icon>Serveurs</a>
-                        <a name="bdds-list" href="/#/bdds-list"><iron-icon icon="vaadin:database" style="--iron-icon-fill-color:#E65100"></iron-icon>Bases de données</a>
-                    </iron-selector>
-
-                </app-drawer>
-                <paper-icon-button class="drawer-toggle" icon="menu" drawer-toggle></paper-icon-button>
-
-                <iron-pages
-                        selected="[[page]]"
-                        attr-for-selected="name"
-                        fallback-selection="view404"
-                        role="main">
-
-                    <dory-sam name="sam" route="{{subroute}}"></dory-sam>
-                    <dory-servers-list name="servers-list"></dory-servers-list>
-                    <dory-bdds-list name="bdds-list"></dory-bdds-list>
-                    <dory-error name="error"  error="[[lastError]]"></dory-error>
-                    <dory-view404 name="view404"></dory-view404>
-                </iron-pages>
-            </app-drawer-layout>
-
-        </template>
 
     </template>
 
     <script>
         class MyApp extends Polymer.Element {
-            static get is() { return 'my-app'; }
+            static get is() {
+                return 'my-app';
+            }
 
             constructor() {
                 super();
                 this._boundListenerErrorEvent = this._handleErrorEvent.bind(this);
                 this._boundListenerLoginSucessEvent = this._handleLoginSuccessEvent.bind(this);
+                this._boundListenerLogout = this._handleLogout.bind(this);
 
             }
 
@@ -173,6 +77,7 @@
                 this.addEventListener('air-cruddy-error', this._boundListenerErrorEvent);
                 // Login
                 this.addEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
+                this.addEventListener('dory-logout', this._boundListenerLogout);
 
             }
 
@@ -183,6 +88,7 @@
                 this.removeEventListener('air-cruddy-error', this._boundListenerErrorEvent);
                 // Login
                 this.removeEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
+                this.removeEventListener('dory-logout', this._boundListenerLogout);
             }
 
             static get properties() {
@@ -192,6 +98,11 @@
                         notify: true,
                         reflectToAttribute: true,
                         observer: '_pageChanged',
+                    },
+                    authPage: {
+                        type: String,
+                        notify: true,
+                        computed: '_computeAuthPage(user)'
                     },
                     routeData: {
                         type: Object,
@@ -222,18 +133,23 @@
                 ];
             }
 
+            _computeAuthPage(user) {
+                return user ? 'app' : 'login';
+            }
+
             _routePageChanged(page) {
                 this.page = page || 'sam';
 
                 // Close a non-persistent drawer when the page & route are changed.
-                if (this.shadowRoot.querySelector('#drawer') && !this.shadowRoot.querySelector('#drawer').persistent) {
-                    this.shadowRoot.querySelector('#drawer').close();
+                const doryLayout = this.shadowRoot.querySelector('#doryLayout');
+                if (doryLayout) {
+                    doryLayout.closeDrawer();
                 }
             }
 
             _pageChanged(page) {
                 // Load page import on demand. Show 404 page if fails
-                const resolvedPageUrl = this.resolveUrl('dory-'+page + '.html');
+                const resolvedPageUrl = this.resolveUrl('dory-' + page + '.html');
                 Polymer.importHref(
                     resolvedPageUrl,
                     null,
@@ -264,9 +180,9 @@
             }
 
             _handleErrorEvent(e) {
-                console.error('Error : ',e);
+                console.error('Error : ', e);
                 const detail = e.detail;
-                this.lastError= detail;
+                this.lastError = detail;
                 const status = detail.status;
                 if (status === 401) {
                     this._handleLogout();
@@ -279,6 +195,7 @@
                 this.$.login.logout();
             }
         }
+
         window.customElements.define(MyApp.is, MyApp);
     </script>
 </dom-module>
