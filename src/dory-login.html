@@ -72,6 +72,11 @@
                 return 'dory-login';
             }
 
+            ready() {
+                super.ready();
+                this._checkUserLogged();
+            }
+
             static get properties() {
                 return {
                     data: {
@@ -170,6 +175,19 @@
                 }).then(result => {
                     this.user= null;
                     return result;
+                });
+            }
+
+            _checkUserLogged() {
+                window.fetch('/api/profiles',{
+                    method: 'GET',
+                    credentials: 'same-origin'
+                }).then(result => {
+                    if(result.status !== 401){
+                        return result.json().then(data => {
+                            this.user = data.user;
+                        })
+                    }
                 });
             }
         }
