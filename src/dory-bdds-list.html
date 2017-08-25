@@ -76,7 +76,11 @@
                     .then( (response)=>{
                         if(response.status !== 200) {
                             console.error('Fetch error : Error code ', response.status);
-                            return;
+                            this.dispatchEvent(new CustomEvent('dory-request-error', {
+                                detail: response,
+                                bubbles: true,
+                                composed: true
+                            }));
                         }
                         else{
                             response.json().then((data)=>{
