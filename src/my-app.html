@@ -256,10 +256,10 @@
 
             _handleLoginSuccessEvent(e) {
                 const user = e.detail.user;
-                console.log('Login Sucess Event for user', user);
+                console.log('Login Success Event for user', user, 'of page', this.route.path);
 //                this.page='sam';
                 this.notifyPath('route.path');
-                this.shadowRoot.querySelector('#samPage').searchList();
+//                this.shadowRoot.querySelector('#samPage').searchList();
 //                this.changeUrl('sam/list');
             }
 
