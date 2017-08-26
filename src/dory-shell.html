@@ -1,0 +1,73 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="redux-mixin.html">
+
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<dom-module id="dory-shell">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <paper-button on-tap="_updateMessage">Update</paper-button>
+        <paper-button on-tap="_updateMessageV2">Update V2</paper-button>
+        <h2>Redux:  [[message]]!</h2>
+    </template>
+
+    <script>
+        /**
+         * `dory-shell`
+         *
+         *
+         * @customElement
+         * @polymer
+         */
+        class DoryShell extends ReduxMixin(Polymer.Element) {
+            static get is() {
+                return 'dory-shell';
+            }
+
+            static get properties() {
+                return {
+                    message: {
+                        type: String,
+                        statePath: 'message'
+                    }
+                };
+            }
+
+            static get actions() {
+                return {
+                    updateMessage(message) {
+                        return {
+                            type: 'UPDATE_MESSAGE',
+                            message
+                        };
+                    }
+                };
+            }
+
+            _updateMessage() {
+                console.log('Request update message');
+                // Let's update the message
+                this.dispatch({
+                    type: 'UPDATE_MESSAGE',
+                    message: 'This is MAGIC!',
+                });
+
+                // Update message using the Action Creator
+//                this.dispatch('updateMessage', 'This is also MAGIC!');
+            }
+
+            _updateMessageV2() {
+                console.log('Request update message V2');
+                // Update message using the Action Creator
+                this.dispatch('updateMessage', 'This is also MAGIC!');
+            }
+        }
+
+        window.customElements.define(DoryShell.is, DoryShell);
+    </script>
+</dom-module>

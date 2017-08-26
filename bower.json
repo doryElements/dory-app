@@ -17,7 +17,8 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "earth-cruddy": "FiveElements/earth-cruddy#master",
     "air-cruddy": "FiveElements/air-cruddy#master",
-    "paper-input": "PolymerElements/paper-input#^2.0.1"
+    "paper-input": "PolymerElements/paper-input#^2.0.1",
+    "polymer-redux": "^1.0.2"
   },
   "resolutions": {
     "polymer": "^2.0.0",

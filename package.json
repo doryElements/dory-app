@@ -10,6 +10,11 @@
     "lint": "npm run lint:javascript && polymer lint",
     "lint:javascript": "eslint . --ext js,html --ignore-path .gitignore",
     "test": "polymer test",
-    "test:integration": "polymer build # test that psk builds without error with the CLI"
+    "test:integration": "polymer build # test that psk builds without error with the CLI",
+    "dev": "polymer serve -p 8080 | npm run watch",
+    "watch": "browser-sync start --proxy http://localhost:8080 --startPath / --files src/**"
+  },
+  "dependencies": {
+    "redux": "^3.7.2"
   }
 }
