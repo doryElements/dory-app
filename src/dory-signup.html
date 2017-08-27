@@ -1,0 +1,49 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="redux-mixin.html">
+
+<dom-module id="dory-signup">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <label>
+            Username :
+            <input id="user" type="text">
+        </label>
+        <button on-tap="signUp">Sign Up!</button>
+    </template>
+
+    <script>
+        /**
+         * `dory-signup`
+         *
+         *
+         * @customElement
+         * @polymer
+         */
+        class DorySignup extends ReduxMixin(Polymer.Element) {
+            static get is() {
+                return 'dory-signup';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'dory-signup'
+                    }
+
+                };
+            }
+
+            signUp() {
+                let username =  this.$.user.value;
+                this.dispatch('signUpCompleted', username);
+            }
+        }
+
+        window.customElements.define(DorySignup.is, DorySignup);
+    </script>
+</dom-module>
