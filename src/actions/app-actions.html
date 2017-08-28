@@ -1,0 +1,22 @@
+<link rel="import" href="../redux-mixin.html">
+
+
+
+<script>
+    AppActionsMixin = Parent => class AppActionsMixin extends ReduxMixin(Parent) {
+
+        static get actions() {
+            return {
+                setAppPage(page) {
+                    return {
+                        type: 'APP_SET_PAGE',
+                        payload:  page
+                    }
+                }
+            }
+        }
+    }
+
+
+
+</script>

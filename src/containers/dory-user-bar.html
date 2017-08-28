@@ -54,7 +54,8 @@
             }
 
             _handleLogout() {
-                this.dispatchEvent(new CustomEvent('dory-logout', {detail: {user: this.user}, bubbles: true, composed: true}));
+                this.dispatch('signOut');
+//                this.dispatchEvent(new CustomEvent('dory-logout', {detail: {user: this.user}, bubbles: true, composed: true}));
             }
 
         }

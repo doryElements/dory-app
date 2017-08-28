@@ -1,0 +1,20 @@
+<script>
+
+       authReducer = (state = {loading: false, user: null}, action) => {
+        console.log(action);
+        switch (action.type) {
+            case 'SIGN_UP_STARTED':
+                return Object.assign({}, state, {loading: true});
+            case 'SIGN_UP_COMPLETED':
+                return Object.assign({}, state, {
+                    loading: false,
+                    user: action.payload
+                });
+            case 'SIGN_OUT_FULFILLED':
+                return Object.assign({}, state, {user: null} );
+        }
+        return state;
+    };
+
+
+</script>

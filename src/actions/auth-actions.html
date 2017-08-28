@@ -10,7 +10,16 @@
                 signUpUser(user) {
                     return {
                         type: 'SIGN_UP_COMPLETED',
-                        user:  user
+                        payload:  user
+                    }
+                },
+                signOut() {
+                    return {
+                        type: 'SIGN_OUT',
+                        payload:   window.fetch('/api/logout', {
+                            method: 'GET',
+                            credentials: 'include'
+                        })
                     }
                 }
             }

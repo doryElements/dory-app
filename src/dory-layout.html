@@ -13,6 +13,8 @@
 
 <link rel="import" href="containers/dory-user-bar.html">
 
+<link rel="import" href="redux-mixin.html">
+
 <dom-module id="dory-layout">
     <template>
         <style>
@@ -115,7 +117,7 @@
          * @customElement
          * @polymer
          */
-        class DoryLayout extends Polymer.Element {
+        class DoryLayout extends ReduxMixin(Polymer.Element) {
             static get is() {
                 return 'dory-layout';
             }
@@ -123,7 +125,8 @@
             static get properties() {
                 return {
                     page: {
-                        type: String
+                        type: String,
+                        statePath: 'app.page'
                     }
                 };
             }

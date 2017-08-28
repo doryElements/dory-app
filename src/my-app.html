@@ -16,7 +16,8 @@
 <link rel="lazy-import" href="dory-view404.html">
 
 
-<link rel="import" href="redux-mixin.html">
+<!--<link rel="import" href="redux-mixin.html">-->
+<link rel="import" href="actions/app-actions.html">
 
 <dom-module id="my-app">
     <template>
@@ -40,9 +41,10 @@
                 tail="{{subroute}}">
         </app-route>
 
+        [[user]]
         <iron-pages selected="[[authPage]]" attr-for-selected="auth" fallback-selection="login">
             <dory-login auth="login" id="login" name="login"></dory-login>
-            <dory-layout auth="app" id="doryLayout" page="[[page]]" >
+            <dory-layout auth="app" id="doryLayout" >
                 <template is="dom-if" if="{{user}}" restamp>
                     <iron-pages selected="[[page]]" attr-for-selected="name"
                                 fallback-selection="view404" role="main">
@@ -60,7 +62,7 @@
     </template>
 
     <script>
-        class MyApp extends ReduxMixin(Polymer.Element) {
+        class MyApp extends AppActionsMixin(Polymer.Element) {
             static get is() {
                 return 'my-app';
             }
@@ -68,8 +70,8 @@
             constructor() {
                 super();
                 this._boundListenerErrorEvent = this._handleErrorEvent.bind(this);
-                this._boundListenerLoginSucessEvent = this._handleLoginSuccessEvent.bind(this);
-                this._boundListenerLogout = this._handleLogout.bind(this);
+//                this._boundListenerLoginSucessEvent = this._handleLoginSuccessEvent.bind(this);
+//                this._boundListenerLogout = this._handleLogout.bind(this);
 
             }
 
@@ -79,8 +81,8 @@
                 this.addEventListener('dory-request-error', this._boundListenerErrorEvent);
                 this.addEventListener('air-cruddy-error', this._boundListenerErrorEvent);
                 // Login
-                this.addEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
-                this.addEventListener('dory-logout', this._boundListenerLogout);
+//                this.addEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
+//                this.addEventListener('dory-logout', this._boundListenerLogout);
 
             }
 
@@ -90,16 +92,15 @@
                 this.removeEventListener('dory-request-error', this._boundListenerErrorEvent);
                 this.removeEventListener('air-cruddy-error', this._boundListenerErrorEvent);
                 // Login
-                this.removeEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
-                this.removeEventListener('dory-logout', this._boundListenerLogout);
+//                this.removeEventListener('dory-login-success', this._boundListenerLoginSucessEvent);
+//                this.removeEventListener('dory-logout', this._boundListenerLogout);
             }
 
             static get properties() {
                 return {
                     page: {
                         type: String,
-                        notify: true,
-                        reflectToAttribute: true,
+                        statePath: 'app.page',
                         observer: '_pageChanged',
                     },
                     authPage: {
@@ -141,7 +142,9 @@
             }
 
             _routePageChanged(page) {
-                this.page = page || 'sam';
+//                this.page = page || 'sam';
+                const appPage = page || 'sam';
+                this.dispatch('setAppPage', appPage);
 
                 // Close a non-persistent drawer when the page & route are changed.
                 const doryLayout = this.shadowRoot.querySelector('#doryLayout');
@@ -170,13 +173,13 @@
             }
 
             _showPage404() {
-                this.page = 'view404';
+                this.dispatch('setAppPage',  'view404');
+//                this.page = 'view404';
             }
 
             _handleLoginSuccessEvent(e) {
                 const user = e.detail.user;
                 console.log('Login Success Event for user', user, 'of page', this.route.path);
-//                this.page='sam';
                 this.notifyPath('route.path');
 //                this.shadowRoot.querySelector('#samPage').searchList();
 //                this.changeUrl('sam/list');
@@ -190,13 +193,14 @@
                 if (status === 401) {
                     this._handleLogout();
                 } else {
-                    this.page = 'error';
+                    this.dispatch('setAppPage',  'error');
+//                    this.page = 'error';
                 }
             }
 
-            _handleLogout() {
-                this.$.login.logout();
-            }
+//            _handleLogout() {
+//                this.$.login.logout();
+//            }
         }
 
         window.customElements.define(MyApp.is, MyApp);

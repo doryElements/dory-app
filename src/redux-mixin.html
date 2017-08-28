@@ -2,6 +2,12 @@
 
 <script src="../node_modules/redux/dist/redux.js"></script>
 <script src="../node_modules/redux-thunk/dist/redux-thunk.js"></script>
+<script src="../node_modules/redux-logger/dist/redux-logger.js"></script>
+<script src="../node_modules/redux-promise-middleware/dist/umd/redux-promise-middleware.js"></script>
+
+
+<!--<script src="reducers/auth-reducers.html"></script>-->
+
 
 <script>
     // Setup a Redux store
@@ -18,25 +24,33 @@
             case 'SIGN_UP_COMPLETED':
                 return Object.assign({}, state, {
                     loading: false,
-                    user: action.user
+                    user: action.payload
                 });
+            case 'SIGN_OUT_FULFILLED':
+                return Object.assign({}, state, {user: null});
         }
         return state;
     };
 
 
-    const msgReducer = (state = {message: null}, action) => {
+    const appReducer = (state = {message: null}, action) => {
         switch (action.type) {
-            case 'UPDATE_MESSAGE':
-                return Object.assign({}, state, {message: action.message});
+            case 'APP_SET_PAGE':
+                return Object.assign({}, state, {page: action.payload});
         }
         return state;
     };
 
-
+    const doryLoggerRedux = reduxLogger.createLogger(reduxLogger.defaults);
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
+    //    Redux.applyMiddleware( doryLoggerRedux, ReduxThunk.default, ReduxPromiseMiddleware)
     const store = Redux.createStore(
-        Redux.combineReducers({auth: authReducer, msg: msgReducer}, Redux.applyMiddleware(ReduxThunk.default))
+        Redux.combineReducers({auth: authReducer, app: appReducer}),
+        {},
+        composeEnhancers(Redux.applyMiddleware(doryLoggerRedux, ReduxThunk.default, ReduxPromiseMiddleware.default()))
     );
+
+
     // Export the ReduxMixin
     ReduxMixin = PolymerRedux(store);
 </script>
