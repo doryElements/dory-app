@@ -2,10 +2,11 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/containers/dory-login.html",
+    "src/dory-sam.html",
+    "src/dory-servers-list.html",
+    "src/dory-bdds-list.html",
+    "src/dory-view404.html"
   ],
   "sources": [
     "src/**/*",
