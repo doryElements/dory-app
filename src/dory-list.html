@@ -67,6 +67,10 @@
                 height : calc(100vh - 100px);
                 overflow : auto;
             }
+
+            .total {
+                margin-left: 35px;
+            }
         </style>
 
         <app-header-layout fullbleed>
@@ -87,9 +91,12 @@
             </app-header>
 
             <div class="content" on-scroll="_handleContentScroll" id="content">
+                <div class="total">
+                    <p>[[total]] applications trouvées.</p>
+                </div>
                 <dory-sam-list id="dorySamList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
                 <paper-fab  icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
-                <dory-request id="request" url="[[url]]" data="{{listData}}" size="20"></dory-request>
+                <dory-request id="request" url="[[url]]" data="{{listData}}" size="20" total="{{total}}"></dory-request>
             </div>
         </app-header-layout>
     </template>
@@ -131,6 +138,14 @@
                     },
 
                     /**
+                     * (Number) of results
+                     */
+                    total: {
+                        type: Number,
+                        notify : true,
+                        observer: '_checkTotal'
+                    },
+                    /**
                     * {string} url used to connect to the DB
                     */
                     url: {
@@ -156,6 +171,10 @@
                 return {
                     'ctrl+f': '_handleKeySearch'
                 };
+            }
+
+            _checkTotal() {
+                console.log('Total',this.total);
             }
 
             _handleEdit(e) {
