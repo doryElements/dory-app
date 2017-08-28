@@ -1,9 +1,12 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
+
+<link rel="import" href="../actions/auth-actions.html">
 
 
 <dom-module id="dory-login">
@@ -67,7 +70,7 @@
          * @polymer
          * @demo demo/index.html
          */
-        class DoryLogin extends Polymer.Element {
+        class DoryLogin extends AuthActionsMixin(Polymer.Element) {
             static get is() {
                 return 'dory-login';
             }
@@ -119,6 +122,8 @@
                     return response.json();
                 }).then(json => {
                     this.user = json.user;
+                    this.dispatch('signUpUser', json.user);
+
                     this.fireLoginSucess(json);
                     return json;
                 }).catch(this._handleErrorRetrieve.bind(this));
@@ -152,6 +157,8 @@
                 return response;
             };
 
+
+
             _handleErrorRetrieve(e) {
                 const status = e.status;
                 console.log('_handle Error status :', status);
@@ -174,6 +181,7 @@
                     credentials: 'include'
                 }).then(result => {
                     this.user= null;
+                    this.dispatch('signUpUser', null);
                     return result;
                 });
             }
@@ -186,6 +194,7 @@
                     if(result.status !== 401){
                         return result.json().then(data => {
                             this.user = data.user;
+                            this.dispatch('signUpUser', data.user);
                         })
                     }
                 });

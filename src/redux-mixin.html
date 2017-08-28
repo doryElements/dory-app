@@ -1,0 +1,42 @@
+<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+
+<script src="../node_modules/redux/dist/redux.js"></script>
+<script src="../node_modules/redux-thunk/dist/redux-thunk.js"></script>
+
+<script>
+    // Setup a Redux store
+    const initial = {
+        loading: false,
+        username: null,
+        message: 'Hello, World!'
+    };
+
+    const authReducer = (state = {loading: false, user: null}, action) => {
+        switch (action.type) {
+            case 'SIGN_UP_STARTED':
+                return Object.assign({}, state, {loading: true});
+            case 'SIGN_UP_COMPLETED':
+                return Object.assign({}, state, {
+                    loading: false,
+                    user: action.user
+                });
+        }
+        return state;
+    };
+
+
+    const msgReducer = (state = {message: null}, action) => {
+        switch (action.type) {
+            case 'UPDATE_MESSAGE':
+                return Object.assign({}, state, {message: action.message});
+        }
+        return state;
+    };
+
+
+    const store = Redux.createStore(
+        Redux.combineReducers({auth: authReducer, msg: msgReducer}, Redux.applyMiddleware(ReduxThunk.default))
+    );
+    // Export the ReduxMixin
+    ReduxMixin = PolymerRedux(store);
+</script>

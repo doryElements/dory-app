@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../actions/auth-actions.html">
+
+
+<dom-module id="dory-user-bar">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .user {
+                color: white;
+                padding: 5px;
+                margin-left: 40px;
+            }
+
+            #logout:hover {
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+        </style>
+
+        <div class="user">
+            <p>Bienvenue, [[user.name]] !</p>
+            <p id="logout" on-tap="_handleLogout">Logout</p>
+        </div>
+
+
+    </template>
+
+    <script>
+        /**
+         * `dory-user-bar`
+         *
+         *
+         * @customElement
+         * @polymer
+         */
+        class DoryUserBar extends AuthActionsMixin(Polymer.Element) {
+            static get is() {
+                return 'dory-user-bar';
+            }
+
+            static get properties() {
+                return {
+                    user: {
+                        type: Object,
+                        statePath: 'auth.user'
+                    }
+                };
+            }
+
+            _handleLogout() {
+                this.dispatchEvent(new CustomEvent('dory-logout', {detail: {user: this.user}, bubbles: true, composed: true}));
+            }
+
+        }
+
+        window.customElements.define(DoryUserBar.is, DoryUserBar);
+    </script>
+</dom-module>

@@ -7,13 +7,16 @@
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 
 
-<link rel="import" href="dory-login.html">
+<link rel="import" href="containers/dory-login.html">
 <link rel="import" href="dory-layout.html">
 <link rel="lazy-import" href="dory-sam.html">
 
 <link rel="lazy-import" href="dory-servers-list.html">
 <link rel="lazy-import" href="dory-bdds-list.html">
 <link rel="lazy-import" href="dory-view404.html">
+
+
+<link rel="import" href="redux-mixin.html">
 
 <dom-module id="my-app">
     <template>
@@ -38,8 +41,8 @@
         </app-route>
 
         <iron-pages selected="[[authPage]]" attr-for-selected="auth" fallback-selection="login">
-            <dory-login auth="login" id="login" name="login" user="{{user}}"></dory-login>
-            <dory-layout auth="app" id="doryLayout" page="[[page]]" user="{{user}}">
+            <dory-login auth="login" id="login" name="login"></dory-login>
+            <dory-layout auth="app" id="doryLayout" page="[[page]]" >
                 <template is="dom-if" if="{{user}}" restamp>
                     <iron-pages selected="[[page]]" attr-for-selected="name"
                                 fallback-selection="view404" role="main">
@@ -57,7 +60,7 @@
     </template>
 
     <script>
-        class MyApp extends Polymer.Element {
+        class MyApp extends ReduxMixin(Polymer.Element) {
             static get is() {
                 return 'my-app';
             }
@@ -122,7 +125,7 @@
                     },
                     user: {
                         type: String,
-                        notify: true
+                        statePath: 'auth.user'
                     }
                 };
             }

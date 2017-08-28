@@ -13,5 +13,9 @@
     "test:integration": "polymer build # test that psk builds without error with the CLI",
     "dev": " npm run watch",
     "watch": "browser-sync start --proxy https://localhost:8181 --startPath / --files src/*"
+  },
+  "dependencies": {
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   }
 }

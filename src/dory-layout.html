@@ -11,6 +11,8 @@
 <link rel="import" href="../bower_components/vaadin-icons/vaadin-icons.html">
 <link rel="import" href="my-icons.html">
 
+<link rel="import" href="containers/dory-user-bar.html">
+
 <dom-module id="dory-layout">
     <template>
         <style>
@@ -83,26 +85,14 @@
                 left: 10px;
             }
 
-            .user {
-                color: white;
-                padding: 5px;
-                margin-left: 40px;
-            }
-
-            #logout:hover {
-                font-weight: bold;
-                cursor: pointer;
-            }
 
         </style>
         <app-drawer-layout fullbleed narrow="{{narrow}}">
             <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
                 <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica" class="logo"></app-toolbar>
 
-                <div class="user">
-                    <p>Bienvenue, [[user.name]] !</p>
-                    <p id="logout" on-tap="_handleLogout">Logout</p>
-                </div>
+
+                <dory-user-bar></dory-user-bar>
 
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                     <a name="dory-list" href="/#/sam/list"><iron-icon icon="tab" style="--iron-icon-fill-color:#FFC107"></iron-icon>Applications</a>
@@ -132,10 +122,6 @@
 
             static get properties() {
                 return {
-                    user: {
-                        type: Object,
-                        notify: true
-                    },
                     page: {
                         type: String
                     }
@@ -148,10 +134,6 @@
                 if (drawer && !drawer.persistent) {
                     drawer.close();
                 }
-            }
-
-            _handleLogout() {
-                this.dispatchEvent(new CustomEvent('dory-logout', {detail: {user: this.user}, bubbles: true, composed: true}));
             }
 
         }

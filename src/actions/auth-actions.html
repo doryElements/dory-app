@@ -1,0 +1,22 @@
+<link rel="import" href="../redux-mixin.html">
+
+
+
+<script>
+    AuthActionsMixin = Parent => class AuthActionsMixin extends ReduxMixin(Parent) {
+
+        static get actions() {
+            return {
+                signUpUser(user) {
+                    return {
+                        type: 'SIGN_UP_COMPLETED',
+                        user:  user
+                    }
+                }
+            }
+        }
+    }
+
+
+
+</script>
