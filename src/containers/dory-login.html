@@ -7,11 +7,11 @@
 
 
 <link rel="import" href="../actions/auth-actions.html">
-
+<link rel="import" href="../shared-styles.html">
 
 <dom-module id="dory-login">
     <template>
-        <style>
+        <style include="shared-styles">
             :host {
                 display: block;
                 background-color: var(--background-color);
@@ -26,12 +26,28 @@
 
             .form{
                 background-color : white;
+                height : 300px;
+                padding: 50px;
+            }
+
+            #card {
+                box-shadow : 0 0 1px #424242;
                 width : 30vw;
                 min-width : 450px;
                 margin : auto;
-                height : 300px;
-                box-shadow : 0 0 1px #424242;
-                padding: 50px;
+            }
+
+            #title {
+                height:90px;
+                background-color: var(--sidebar-background-color);
+                color: white;
+                padding: 15px;
+            }
+
+            h1 {
+                margin-left: 50px;
+                font-size: 2.2em;
+                font-weight: normal;
             }
 
             .form-control{
@@ -51,14 +67,21 @@
             }
 
         </style>
-            <div class="container">
+
+        <div class="container">
+            <div id="card">
+                <div id="title">
+                    <h1>DORY</h1>
+                </div>
                 <div id="form" class="form">
                     <paper-input id="username" error-message="[[errorMessage]]" class="form-control" label="Username" value="{{data.username}}" required></paper-input>
                     <paper-input id="password" error-message="[[errorMessage]]" class="form-control" label="Password" type="password" value="{{data.password}}" required></paper-input>
                     <paper-button class="form-button" on-tap="_handleLogin">Login</paper-button>
                 </div>
             </div>
-            <paper-toast id="errorToast" class="fit-top" text="[[errorMessage]]"></paper-toast>
+        </div>
+
+        <paper-toast id="errorToast" class="fit-top" text="[[errorMessage]]"></paper-toast>
     </template>
 
     <script>

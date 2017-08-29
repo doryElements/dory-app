@@ -71,13 +71,28 @@
             .total {
                 margin-left: 35px;
             }
+
+            .title {
+                margin:auto;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2.2em;
+                font-weight: normal;
+                margin:0;
+                color: #FFC107;
+            }
         </style>
 
         <app-header-layout fullbleed>
             <app-header>
                 <iron-pages selected="[[tabSelected]]" fallback-selection="fallback">
                     <app-toolbar>
-                        <div main-title>DORY - Dépendances des applications</div>
+                        <div main-title class="title">
+                            <h1>DORY</h1>
+                            Dépendances des applications
+                        </div>
                         <paper-icon-button icon="search" on-tap="_toggleSearchBar" class="big-icon"></paper-icon-button>
                     </app-toolbar>
 
