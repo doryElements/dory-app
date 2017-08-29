@@ -1,27 +1,48 @@
-const path = require("path");
+'use strict';
+/* global __dirname module require*/
+/* eslint comma-dangle: ["error", "never"] */
+const path = require('path');
 
-const DIST_DIR = path.resolve(__dirname, "dist");
-const SRC_DIR = path.resolve(__dirname, "src");
-
-const config = {
-    entry: SRC_DIR + "/app/index.js",
+module.exports = {
+    entry: './src/my-app.html',
     output: {
-        path: DIST_DIR + "/app",
-        filename: "bundle.js",
-        publicPath: "/app/"
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, './dist'),
+        publicPath: 'dist/'
     },
+    resolve: {
+        modules: ['node_modules', 'bower_components'],
+        descriptionFiles: ['package.json']
+    },
+    devtool: 'inline-source-map',
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.js?/,
-                include: SRC_DIR,
-                loader: "babel-loader",
-                query: {
-                    presets: ["es2015", "stage-2"]
-                }
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['env'],
+                            plugins: ['syntax-dynamic-import']
+                        }
+                    },
+                    {
+                        loader: 'polymer-webpack-loader'
+                    }
+                ]
+            },
+            {
+                test: /\.js$/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['env']
+                        }
+                    }
+                ]
             }
         ]
     }
 };
-
-module.exports = config;

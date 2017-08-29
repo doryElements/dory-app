@@ -43,14 +43,24 @@
                 return {
                     entityId: {
                         type: String,
+                        notify: true,
+                        observer: '_checkId'
                     },
+                    data: {
+                        type: Object
+                    }
                 };
             }
             ready() {
                 super.ready();
                 this.$.earth.addEventListener('earth-layout-close', (e)=>{
+                    this.data=null;
+                    this.entityId=null;
                     this.dispatchEvent(new CustomEvent('dory-editor-close'));
                 });
+            }
+            _checkId(){
+                console.log('ID :',this.entityId);
             }
         }
 
