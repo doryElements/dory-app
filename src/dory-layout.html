@@ -46,14 +46,15 @@
             }
 
             .logo-toolbar {
-                background-color: var(--logo-background-color);
                 height : 100px;
+                background-color: var(--logo-background-color);
             }
 
             .logo {
+                height:80px;
+                width: 164px;
                 margin-right: auto;
                 margin-left: auto;
-                height:80px;
             }
 
             .drawer-list {
@@ -92,7 +93,9 @@
         </style>
         <app-drawer-layout fullbleed narrow="{{narrow}}">
             <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
-                <app-toolbar class="logo-toolbar"><img src="../images/agrica-white.png" alt="Agrica" class="logo"></app-toolbar>
+                <app-toolbar class="logo-toolbar">
+                    <img src="../images/agrica-white.svg" alt="Agrica" class="logo">
+                </app-toolbar>
 
 
                 <dory-user-bar></dory-user-bar>
