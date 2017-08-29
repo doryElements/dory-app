@@ -28,7 +28,8 @@
     "prism-element": "PolymerElements/prism-element#^2.0.1",
     "earth-crud-pages": "FiveElements/earth-crud-pages#master",
     "vaadin-icons": "vaadin/vaadin-icons",
-    "polymer-redux": "^1.0.2"
+    "polymer-redux": "^1.0.2",
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0"
   },
   "resolutions": {
     "polymer": "^2.0.0",

@@ -15,7 +15,7 @@
 <link rel="import" href="../bower_components/dory-layout/dory-request.html">
 
 <link rel="import" href="../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
-
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="dory-list">
@@ -32,13 +32,13 @@
             }
 
             #search {
-                width : calc(100% - 2px);
-                height : calc(100% - 2px);
-                position : absolute;
-                margin-top : auto;
+                width: calc(100% - 2px);
+                height: calc(100% - 2px);
+                position: absolute;
+                margin-top: auto;
                 margin-bottom: auto;
-                --paper-input-container-underline:{
-                    display : none;
+                --paper-input-container-underline: {
+                    display: none;
                 };
                 --paper-input-container-underline-focus: {
                     display: none;
@@ -46,26 +46,28 @@
                 --paper-input-container-underline-disabled: {
                     display: none;
                 };
-                --paper-input-container:{
-                    height : calc(100% - 10px);
-                    padding :5px;
+                --paper-input-container: {
+                    height: calc(100% - 10px);
+                    padding: 5px;
                 };
             }
-            paper-input[focused]{
-                border  : solid 1px var(--search-border-color);
+
+            paper-input[focused] {
+                border: solid 1px var(--search-border-color);
             }
-            paper-fab{
-                float:right;
+
+            paper-fab {
+                float: right;
                 position: fixed;
                 bottom: 10px;
                 right: 10px;
             }
 
-            .content{
+            .content {
                 background-color: var(--background-color);
-                width : 100%;
-                height : calc(100vh - 100px);
-                overflow : auto;
+                width: 100%;
+                height: calc(100vh - 100px);
+                overflow: auto;
             }
 
             .total {
@@ -82,9 +84,11 @@
                     </app-toolbar>
 
                     <app-toolbar>
-                        <paper-input id="search" class="search-bar" value="{{searchText}}" placeholder="[[placeholder]]" on-blur="_toggleSearchBar">
-                        <iron-icon slot="prefix" icon="search" class="big-icon"></iron-icon>
-                        <paper-icon-button slot="suffix" icon="clear" class="big-icon" on-mousedown="_clearSearchBar"></paper-icon-button>
+                        <paper-input id="search" class="search-bar" value="{{searchText}}" placeholder="[[placeholder]]"
+                                     on-blur="_toggleSearchBar">
+                            <iron-icon slot="prefix" icon="search" class="big-icon"></iron-icon>
+                            <paper-icon-button slot="suffix" icon="clear" class="big-icon"
+                                               on-mousedown="_clearSearchBar"></paper-icon-button>
                         </paper-input>
                     </app-toolbar>
                 </iron-pages>
@@ -92,18 +96,22 @@
 
             <div class="content" on-scroll="_handleContentScroll" id="content">
                 <div class="total">
-                    <p>[[total]] applications trouvées.</p>
+                    <p>{{localize('appResultCount', 'num', total)}}
+                        <!--TODO pour la recherche [[searchText]]-->
+                    </p>
                 </div>
                 <dory-sam-list id="dorySamList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
-                <paper-fab  icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
+                <paper-fab icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
                 <dory-request id="request" url="[[url]]" data="{{listData}}" size="20" total="{{total}}"></dory-request>
             </div>
         </app-header-layout>
     </template>
 
     <script>
-        class DoryList extends Polymer.mixinBehaviors([Polymer.IronA11yKeysBehavior], Polymer.Element) {
-            static get is() { return 'dory-list'; }
+        class DoryList extends Polymer.mixinBehaviors([Polymer.IronA11yKeysBehavior, Polymer.AppLocalizeBehavior], Polymer.Element) {
+            static get is() {
+                return 'dory-list';
+            }
 
             ready() {
                 super.ready();
@@ -116,13 +124,23 @@
             }
 
             static get properties() {
-                return{
+                return {
+                    language: {
+                        type: String,
+                        value: 'fr'
+                    },
+                    resources: {
+                        type: Object,
+                        value: function () {
+                            return { 'fr': {'appResultCount': '{num, plural, =0 {Aucune application trouvée.} =1 {une application trouvée.} other {# applications trouvées.}}'}}
+                        }
+                    },
                     logo: {
                         type: String,
                     },
                     /**
-                    * {string} value of the input inside the search-bar
-                    */
+                     * {string} value of the input inside the search-bar
+                     */
                     searchText: {
                         type: String,
                         observer: '_searchTextChanged',
@@ -130,8 +148,8 @@
                     },
 
                     /**
-                    * {Array} of results returned by dory-request
-                    */
+                     * {Array} of results returned by dory-request
+                     */
                     listData: {
                         type: Array,
                         notify: true,
@@ -142,12 +160,12 @@
                      */
                     total: {
                         type: Number,
-                        notify : true,
+                        notify: true,
                         observer: '_checkTotal'
                     },
                     /**
-                    * {string} url used to connect to the DB
-                    */
+                     * {string} url used to connect to the DB
+                     */
                     url: {
                         type: String,
                         value: '/api/sams/',
@@ -160,7 +178,7 @@
 
                     keyEventTarget: {
                         type: Object,
-                        value: function() {
+                        value: function () {
                             return document.body;
                         }
                     }
@@ -174,7 +192,7 @@
             }
 
             _checkTotal() {
-                console.log('Total',this.total);
+                console.log('Total', this.total);
             }
 
             _handleEdit(e) {
@@ -203,25 +221,25 @@
             }
 
             _handleContentScroll() {
-                if(this.$.content.offsetHeight + this.$.content.scrollTop >= this.$.content.scrollHeight) {
+                if (this.$.content.offsetHeight + this.$.content.scrollTop >= this.$.content.scrollHeight) {
                     this.shadowRoot.querySelector('#request').loadMoreData();
                 }
             }
 
             _toggleSearchBar() {
-                if(this.tabSelected === 0) {
-                    this.tabSelected=1;
+                if (this.tabSelected === 0) {
+                    this.tabSelected = 1;
                     this.$.search.focus();
                 }
-                else{
+                else {
                     this.$.search.blur();
-                    this.tabSelected=0;
+                    this.tabSelected = 0;
                 }
             }
 
             _clearSearchBar() {
                 this.searchText = '';
-                this.listData=[];
+                this.listData = [];
                 this.shadowRoot.querySelector('#request').createRequest(this.searchText);
             }
 
@@ -229,11 +247,12 @@
                 return this.$.request.createRequest(this.searchText);
             }
 
-            _handleKeySearch(e){
+            _handleKeySearch(e) {
                 e.preventDefault();
                 this._toggleSearchBar();
             }
         }
+
         window.customElements.define(DoryList.is, DoryList);
     </script>
 </dom-module>
