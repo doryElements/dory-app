@@ -157,8 +157,7 @@
                      */
                     total: {
                         type: Number,
-                        notify : true,
-                        observer: '_checkTotal'
+                        notify : true
                     },
                     /**
                     * {string} url used to connect to the DB
@@ -186,10 +185,6 @@
                 return {
                     'ctrl+f': '_handleKeySearch'
                 };
-            }
-
-            _checkTotal() {
-                console.log('Total',this.total);
             }
 
             _handleEdit(e) {

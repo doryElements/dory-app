@@ -1,5 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="dory-bdds-list">
@@ -30,10 +33,24 @@
             .content {
                 padding : 10px;
             }
+            .title {
+                margin:auto;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2.2em;
+                font-weight: normal;
+                margin:0;
+                color: #FFC107;
+            }
         </style>
         <app-header slot="header" condenses reveals effects="waterfall">
             <app-toolbar>
-                <div main-title>DORY - Bases de données utilisées</div>
+                <div main-title class="title">
+                    <h1>DORY</h1>
+                    Liste des serveurs
+                </div>
             </app-toolbar>
         </app-header>
 
