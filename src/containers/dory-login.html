@@ -1,5 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+
 
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
@@ -194,7 +194,6 @@
 
 
             fireLoginSucess(user) {
-                console.log('LoginSucess', JSON.stringify(user));
                 this.dispatchEvent(new CustomEvent('dory-login-success', {detail: {user}, bubbles: true, composed: true}));
             }
 
