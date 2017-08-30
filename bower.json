@@ -29,7 +29,8 @@
     "earth-crud-pages": "FiveElements/earth-crud-pages#master",
     "vaadin-icons": "vaadin/vaadin-icons",
     "polymer-redux": "^1.0.2",
-    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0"
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0",
+    "iron-collapse": "PolymerElements/iron-collapse#^2.0.0"
   },
   "resolutions": {
     "polymer": "^2.0.0",
