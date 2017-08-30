@@ -175,8 +175,7 @@
                      */
                     total: {
                         type: Number,
-                        notify: true,
-                        observer: '_checkTotal'
+                        notify: true
 
                     },
                     /**
@@ -207,11 +206,6 @@
                 };
             }
 
-            _checkTotal() {
-                console.log('Total', this.total);
-            }
-
-
             _handleEdit(e) {
                 this.entityId = e.detail.id;
                 this.dispatchEvent(new CustomEvent('dory-open-editor', {detail: {id: this.entityId}}));
@@ -223,7 +217,7 @@
             }
 
             _openEditorCreate() {
-                this.entityId = null;
+                this.entityId = 'new';
                 this.dispatchEvent(new CustomEvent('dory-open-editor', {detail: {id: this.entityId}}));
             }
 
