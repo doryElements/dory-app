@@ -111,8 +111,11 @@
 
             <div class="content" on-scroll="_handleContentScroll" id="content">
                 <div class="total">
-                    <p>{{localize('appResultCount', 'num', total)}}
-                        <!--TODO pour la recherche [[searchText]]-->
+                    <p>
+                        <template is="dom-if" if="[[searchValue]]">
+                            [[searchValue]] :
+                        </template>
+                        {{localize('appResultCount', 'num', total)}}
                     </p>
                 </div>
                 <dory-sam-list id="dorySamList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
@@ -161,7 +164,13 @@
                         observer: '_searchTextChanged',
                         notify: true,
                     },
-
+                    /**
+                     * {string} value of the search once typing is finished
+                     */
+                    searchValue: {
+                        type: String,
+                        notify: true
+                    },
                     /**
                      * {Array} of results returned by dory-request
                      */
@@ -226,7 +235,8 @@
                     this._debouncer,
                     Polymer.Async.timeOut.after(500),
                     () => {
-                        this.shadowRoot.querySelector('#request').createRequest(this.searchText);
+                        this.searchValue = this.searchText;
+                        this.shadowRoot.querySelector('#request').createRequest(this.searchValue);
                     }
                 );
             }
