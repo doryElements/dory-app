@@ -268,6 +268,14 @@
                 return this.$.request.createRequest(this.searchText);
             }
 
+            refresh(e) {
+                this.searchText = '';
+                this.shadowRoot.querySelector('#request').refresh();
+                if(e.detail.action==='delete'){
+//                    this.shadowRoot.querySelector('#request').loadMoreData();
+                }
+            }
+
             _handleKeySearch(e) {
                 e.preventDefault();
                 this._toggleSearchBar();

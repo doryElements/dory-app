@@ -47,6 +47,7 @@
                     this._handleChangePageEvent({ page:'show', id});
                 });
                 this.$.doryEditor.addEventListener('dory-editor-close', (e) => {
+                    this.$.doryList.refresh(e);
                     this._handleChangePageEvent({ page:'list' });
                 });
                 this.$.doryShow.addEventListener('dory-open-editor',(e) => {
