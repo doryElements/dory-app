@@ -67,6 +67,10 @@
                 background-color: var(--background-color);
                 width: 100%;
                 height: calc(100vh - 100px);
+            }
+
+            .list {
+                height: calc(100vh - 160px );
                 overflow: auto;
             }
 
@@ -109,7 +113,7 @@
                 </iron-pages>
             </app-header>
 
-            <div class="content" on-scroll="_handleContentScroll" id="content">
+            <div class="content" id="content">
                 <div class="total">
                     <p>
                         <template is="dom-if" if="[[searchValue]]">
@@ -118,9 +122,11 @@
                         {{localize('appResultCount', 'num', total)}}
                     </p>
                 </div>
-                <dory-sam-list id="dorySamList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
-                <paper-fab icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
-                <dory-request id="request" url="[[url]]" data="{{listData}}" size="20" total="{{total}}"></dory-request>
+                <div class="list" on-scroll="_handleContentScroll" id="list">
+                    <dory-sam-list id="dorySamList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
+                    <paper-fab icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
+                    <dory-request id="request" url="[[url]]" data="{{listData}}" size="20" total="{{total}}"></dory-request>
+                </div>
             </div>
         </app-header-layout>
     </template>
@@ -242,7 +248,7 @@
             }
 
             _handleContentScroll() {
-                if (this.$.content.offsetHeight + this.$.content.scrollTop >= this.$.content.scrollHeight) {
+                if (this.$.list.offsetHeight + this.$.list.scrollTop >= this.$.list.scrollHeight) {
                     this.shadowRoot.querySelector('#request').loadMoreData();
                 }
             }
@@ -259,9 +265,8 @@
             }
 
             _clearSearchBar() {
-                this.searchText = '';
                 this.listData = [];
-                this.shadowRoot.querySelector('#request').createRequest(this.searchText);
+                this.searchText= null;
             }
 
             search() {
@@ -269,10 +274,18 @@
             }
 
             refresh(e) {
-                this.searchText = '';
                 this.shadowRoot.querySelector('#request').refresh();
-                if(e.detail.action==='delete'){
-//                    this.shadowRoot.querySelector('#request').loadMoreData();
+                if(this.searchText){
+                    this.set('searchText',null);
+                }
+                else{
+                    this._debouncer = Polymer.Debouncer.debounce(
+                        this._debouncer,
+                        Polymer.Async.timeOut.after(1000),
+                        () => {
+                            this.shadowRoot.querySelector('#request').createRequest();
+                        }
+                    );
                 }
             }
 
