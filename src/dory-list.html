@@ -17,6 +17,7 @@
 <link rel="import" href="../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="dory-layout.html">
 
 <dom-module id="dory-list">
     <template>
@@ -91,44 +92,46 @@
             }
         </style>
 
-        <app-header-layout fullbleed>
-            <app-header>
-                <iron-pages selected="[[tabSelected]]" fallback-selection="fallback">
-                    <app-toolbar>
-                        <div main-title class="title">
-                            <h1>DORY</h1>
-                            Dépendances des applications
-                        </div>
-                        <paper-icon-button icon="search" on-tap="_toggleSearchBar" class="big-icon"></paper-icon-button>
-                    </app-toolbar>
+        <dory-layout page="list" auth="app" id="doryLayout" >
+            <app-header-layout fullbleed>
+                <app-header>
+                    <iron-pages selected="[[tabSelected]]" fallback-selection="fallback">
+                        <app-toolbar>
+                            <div main-title class="title">
+                                <h1>DORY</h1>
+                                Dépendances des applications
+                            </div>
+                            <paper-icon-button icon="search" on-tap="_toggleSearchBar" class="big-icon"></paper-icon-button>
+                        </app-toolbar>
 
-                    <app-toolbar>
-                        <paper-input id="search" class="search-bar" value="{{searchText}}" placeholder="[[placeholder]]"
-                                     on-blur="_toggleSearchBar">
-                            <iron-icon slot="prefix" icon="search" class="big-icon"></iron-icon>
-                            <paper-icon-button slot="suffix" icon="clear" class="big-icon"
-                                               on-mousedown="_clearSearchBar"></paper-icon-button>
-                        </paper-input>
-                    </app-toolbar>
-                </iron-pages>
-            </app-header>
+                        <app-toolbar>
+                            <paper-input id="search" class="search-bar" value="{{searchText}}" placeholder="[[placeholder]]"
+                                         on-blur="_toggleSearchBar">
+                                <iron-icon slot="prefix" icon="search" class="big-icon"></iron-icon>
+                                <paper-icon-button slot="suffix" icon="clear" class="big-icon"
+                                                   on-mousedown="_clearSearchBar"></paper-icon-button>
+                            </paper-input>
+                        </app-toolbar>
+                    </iron-pages>
+                </app-header>
 
-            <div class="content" id="content">
-                <div class="total">
-                    <p>
-                        <template is="dom-if" if="[[searchValue]]">
-                            [[searchValue]] :
-                        </template>
-                        {{localize('appResultCount', 'num', total)}}
-                    </p>
+                <div class="content" id="content">
+                    <div class="total">
+                        <p>
+                            <template is="dom-if" if="[[searchValue]]">
+                                [[searchValue]] :
+                            </template>
+                            {{localize('appResultCount', 'num', total)}}
+                        </p>
+                    </div>
+                    <div class="list" on-scroll="_handleContentScroll" id="list">
+                        <dory-sam-list id="dorySamList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
+                        <paper-fab icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
+                        <dory-request id="request" url="[[url]]" data="{{listData}}" size="20" total="{{total}}"></dory-request>
+                    </div>
                 </div>
-                <div class="list" on-scroll="_handleContentScroll" id="list">
-                    <dory-sam-list id="dorySamList" items="{{listData}}" entity-id="{{entityId}}"></dory-sam-list>
-                    <paper-fab icon="add-circle-outline" on-tap="_openEditorCreate"></paper-fab>
-                    <dory-request id="request" url="[[url]]" data="{{listData}}" size="20" total="{{total}}"></dory-request>
-                </div>
-            </div>
-        </app-header-layout>
+            </app-header-layout>
+        </dory-layout>
     </template>
 
     <script>

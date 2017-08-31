@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/dory-sam/dory-sam-card-details.html">
 
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="dory-layout.html">
 
 <dom-module id="dory-show">
 <template>
@@ -34,23 +35,24 @@
         }
     </style>
 
-    <app-header-layout fullbleed>
+    <dory-layout page="show" auth="app" id="doryLayoutShow" >
+        <app-header-layout fullbleed>
 
-        <app-header slot="header" condenses reveals effects="waterfall">
-            <app-toolbar>
-                <div main-title class="title">
-                    <h1>DORY</h1>
-                    Dépendances des applications
-                </div>
-                <paper-icon-button icon="create" on-tap="_handleEdit"></paper-icon-button>
-            </app-toolbar>
-        </app-header>
+            <app-header slot="header" condenses reveals effects="waterfall">
+                <app-toolbar>
+                    <div main-title class="title">
+                        <h1>DORY</h1>
+                        Dépendances des applications
+                    </div>
+                    <paper-icon-button icon="create" on-tap="_handleEdit"></paper-icon-button>
+                </app-toolbar>
+            </app-header>
 
-        <div class="main-content">
-            <dory-sam-card-details entity-id="[[entityId]]"></dory-sam-card-details>
-        </div>
-    </app-header-layout>
-
+            <div class="main-content">
+                <dory-sam-card-details entity-id="[[entityId]]"></dory-sam-card-details>
+            </div>
+        </app-header-layout>
+    </dory-layout>
 </template>
 
     <script>

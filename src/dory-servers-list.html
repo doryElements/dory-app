@@ -3,10 +3,12 @@
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="dory-layout.html">
 
 <dom-module id="dory-servers-list">
     <template>
@@ -35,7 +37,10 @@
             }
 
             .content {
+                height: 100%;
                 padding : 10px;
+                background-color: var(--background-color);
+                overflow: auto;
             }
 
             paper-tabs{
@@ -58,36 +63,39 @@
             }
         </style>
 
-        <app-header slot="header" condenses reveals effects="waterfall">
-            <app-toolbar>
-                <div main-title class="title">
-                    <h1>DORY</h1>
-                    Liste des serveurs
-                </div>
-            </app-toolbar>
-        </app-header>
+        <dory-layout auth="app">
+            <app-header-layout fullbleed>
+                <app-header slot="header" condenses reveals effects="waterfall">
+                    <app-toolbar>
+                        <div main-title class="title">
+                            <h1>DORY</h1>
+                            Liste des serveurs
+                        </div>
+                    </app-toolbar>
+                </app-header>
 
-        <div class="content">
-            <paper-tabs selected="{{tabSelected}}" fit-container>
-                <paper-tab>SERVEURS DMZ</paper-tab>
-                <paper-tab>SERVEURS LAN</paper-tab>
-            </paper-tabs>
-            <iron-pages selected="[[tabSelected]]"  fallback-selection="fallback">
-                <div>
-                    <template is="dom-repeat" items="{{data.serversDmz}}">
-                        <paper-card heading="[[item]]" on-tap="_search">
-                        </paper-card>
-                    </template>
+                <div class="content">
+                    <paper-tabs selected="{{tabSelected}}" fit-container>
+                        <paper-tab>SERVEURS DMZ</paper-tab>
+                        <paper-tab>SERVEURS LAN</paper-tab>
+                    </paper-tabs>
+                    <iron-pages selected="[[tabSelected]]"  fallback-selection="fallback">
+                        <div>
+                            <template is="dom-repeat" items="{{data.serversDmz}}">
+                                <paper-card heading="[[item]]" on-tap="_search">
+                                </paper-card>
+                            </template>
+                        </div>
+                        <div>
+                            <template is="dom-repeat" items="{{data.serversLan}}">
+                                <paper-card heading="[[item]]" on-tap="_search">
+                                </paper-card>
+                            </template>
+                        </div>
+                    </iron-pages>
                 </div>
-                <div>
-                    <template is="dom-repeat" items="{{data.serversLan}}">
-                        <paper-card heading="[[item]]" on-tap="_search">
-                        </paper-card>
-                    </template>
-                </div>
-            </iron-pages>
-
-        </div>
+            </app-header-layout>
+        </dory-layout>
     </template>
     <script>
         class DoryServersList extends Polymer.Element {

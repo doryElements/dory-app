@@ -1,9 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="dory-layout.html">
 
 <dom-module id="dory-bdds-list">
     <template>
@@ -31,8 +33,12 @@
             }
 
             .content {
+                height: 100%;
                 padding : 10px;
+                background-color: var(--background-color);
+                overflow: auto;
             }
+
             .title {
                 margin:auto;
                 text-align: center;
@@ -45,22 +51,28 @@
                 color: #FFC107;
             }
         </style>
-        <app-header slot="header" condenses reveals effects="waterfall">
-            <app-toolbar>
-                <div main-title class="title">
-                    <h1>DORY</h1>
-                    Liste des serveurs
-                </div>
-            </app-toolbar>
-        </app-header>
 
-        <div class="content">
-            <template is="dom-repeat" items="{{data}}">
-                <paper-card heading="[[item]]">
-                </paper-card>
-            </template>
-        </div>
+        <dory-layout auth="app">
+            <app-header-layout fullbleed>
+                <app-header slot="header" condenses reveals effects="waterfall">
+                    <app-toolbar>
+                        <div main-title class="title">
+                            <h1>DORY</h1>
+                            Liste des serveurs de bases de données
+                        </div>
+                    </app-toolbar>
+                </app-header>
+
+                <div class="content">
+                    <template is="dom-repeat" items="{{data}}">
+                        <paper-card heading="[[item]]">
+                        </paper-card>
+                    </template>
+                </div>
+            </app-header-layout>
+        </dory-layout>
     </template>
+
     <script>
         class DoryBddsList extends Polymer.Element {
             static get is() {

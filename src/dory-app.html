@@ -31,16 +31,13 @@
                    data="{{routeData}}" tail="{{subroute}}">
         </app-route>
 
-        <dory-layout auth="app" id="doryLayout" >
-                <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-                    <dory-sam name="sam" route="{{subroute}}"></dory-sam>
-                    <dory-servers-list name="servers-list" route="{{subroute}}"></dory-servers-list>
-                    <dory-bdds-list name="bdds-list"></dory-bdds-list>
-                    <dory-error name="error" error="[[lastError]]"></dory-error>
-                    <dory-view404 name="view404"></dory-view404>
-                </iron-pages>
-        </dory-layout>
-
+        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+            <dory-sam name="sam" route="{{subroute}}"></dory-sam>
+            <dory-servers-list name="servers-list" route="{{subroute}}"></dory-servers-list>
+            <dory-bdds-list name="bdds-list"></dory-bdds-list>
+            <dory-error name="error" error="[[lastError]]"></dory-error>
+            <dory-view404 name="view404"></dory-view404>
+        </iron-pages>
 
     </template>
 
