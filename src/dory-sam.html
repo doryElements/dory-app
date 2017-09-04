@@ -82,6 +82,10 @@
                     }
                 };
             }
+
+            _handleEditorError(message){
+                this.$.doryEditor._handleError(message);
+            }
         }
 
         window.customElements.define(DorySam.is, DorySam);

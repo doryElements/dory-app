@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/earth-cruddy/earth-cruddy.html">
 <link rel="import" href="../bower_components/air-cruddy/air-cruddy.html">
 <link rel="import" href="../bower_components/dory-sam/dory-sam-editor-form.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <dom-module id="dory-editor">
     <template>
@@ -32,6 +33,7 @@
                 </air-cruddy>
             </div>
         </earth-cruddy>
+        <paper-toast id="errorToast" text="[[errorMessage]]"></paper-toast>
     </template>
 
     <script>
@@ -45,6 +47,9 @@
                     },
                     data: {
                         type: Object
+                    },
+                    errorMessage: {
+                        type: String
                     }
                 };
             }
@@ -54,6 +59,11 @@
                     this.entityId = null;
                     this.dispatchEvent(new CustomEvent('dory-editor-close',e));
                 });
+            }
+
+            _handleError(message){
+                this.errorMessage = message;
+                this.$.errorToast.open();
             }
         }
 

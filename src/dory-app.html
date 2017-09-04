@@ -32,7 +32,7 @@
         </app-route>
 
         <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-            <dory-sam name="sam" route="{{subroute}}"></dory-sam>
+            <dory-sam id="sam" name="sam" route="{{subroute}}"></dory-sam>
             <dory-servers-list name="servers-list" route="{{subroute}}"></dory-servers-list>
             <dory-bdds-list name="bdds-list"></dory-bdds-list>
             <dory-error name="error" error="[[lastError]]"></dory-error>
@@ -149,10 +149,7 @@
 
             _handleLoginSuccessEvent(e) {
                 const user = e.detail.user;
-                console.log('Login Success Event for user', user, 'of page', this.route.path);
                 this.notifyPath('route.path');
-//                this.shadowRoot.querySelector('#samPage').searchList();
-//                this.changeUrl('sam/list');
             }
 
             _handleErrorEvent(e) {
@@ -162,9 +159,12 @@
                 const status = detail.status;
                 if (status === 401) {
                     this.dispatch('signUpUser', null);
-                } else {
+                }
+                else if(status === 422){
+                    this.$.sam._handleEditorError('Conflit pendant la création : application existante');
+                }
+                else {
                     this.dispatch('setAppPage',  'error');
-//                    this.page = 'error';
                 }
             }
         }
