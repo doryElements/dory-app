@@ -1,0 +1,23 @@
+<assembly>
+    <id>app-htdocs-es5-bundled</id>
+    <formats>
+        <format>${packaging.assembly.app.format}</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}/build/es5-bundled</directory>
+            <outputDirectory>htdocs</outputDirectory>
+            <excludes>
+                <!-- Project Directory exclusion -->
+                <exclude>bower.json</exclude>
+                <!-- Other -->
+            </excludes>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+    </fileSets>
+
+</assembly>

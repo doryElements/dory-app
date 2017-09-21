@@ -30,3 +30,7 @@ gulp.task('gzip', function () {
         .pipe(gzip())
         .pipe(gulp.dest('dist/gzip'));
 });
+
+
+
+gulp.task('test', []);
