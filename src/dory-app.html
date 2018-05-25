@@ -156,7 +156,7 @@
             }
 
             _handleErrorEvent(e) {
-                console.error('Error : ', e);
+                console.error('Error : ',e);
                 const detail = e.detail;
                 this.lastError = detail;
                 const status = detail.status;
@@ -164,7 +164,7 @@
                     this.dispatch('signUpUser', null);
                 } else {
                     this.dispatch('setAppPage',  'error');
-//                    this.page = 'error';
+                    this.page = 'error';
                 }
             }
         }
